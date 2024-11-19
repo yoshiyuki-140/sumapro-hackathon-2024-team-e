@@ -1,0 +1,198 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Swagger スマプロハッカソン2024 REST API DOCS- OpenAPI 3.0",
+    "description": "スマプロハッカソン2024のためのREST API仕様書",
+    "contact": {
+      "email": "c1221251@st.kanazawa-it.ac.jp"
+    },
+    "version": "0.0.1"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "chat",
+      "description": "対話内容を定義"
+    }
+  ],
+  "paths": {
+    "/api/post": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "これまでの会話履歴から、新しいデートプランを返却する",
+        "description": "対話内容からデートプラン情報を返却する",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessagesRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessagesResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request クライアントエラー"
+          },
+          "404": {
+            "description": "Page is not found"
+          },
+          "422": {
+            "description": "バリデーションエラー : リクエストボディーのJSONデータ構造が違う"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MessagesRequestBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "type": "string",
+              "example": "customer"
+            },
+            "message": {
+              "type": "string",
+              "example": "土曜日に彼女とデートがあるので、金沢21世紀美術館を通るルートで、おすすめのデートプランを提案してください。"
+            },
+            "facilitys": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "金沢21世紀美術館"
+                  },
+                  "latitude": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 36.56103500774815
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 136.6585143674217
+                  }
+                }
+              }
+            },
+            "description": {
+              "type": "string",
+              "example": "以下の順番でデートプランを提案します。..."
+            }
+          }
+        },
+        "example": [
+          {
+            "role": "customer",
+            "message": "土曜日に彼女とデートがあるので、金沢21世紀美術館を通るルートで、おすすめのデートプランを提案してください。"
+          },
+          {
+            "role": "system",
+            "facilitys": [
+              {
+                "name": "金沢21世紀美術館",
+                "latitude": 36.56103500774815,
+                "longitude": 136.6585143674217
+              },
+              {
+                "name": "兼六園",
+                "latitude": 36.562282887579286,
+                "longitude": 136.66268368276226
+              },
+              {
+                "name": "金沢城跡",
+                "latitude": 36.564885272315244,
+                "longitude": 136.65813927098867
+              },
+              {
+                "name": "尾山神社",
+                "latitude": 36.56623894300971,
+                "longitude": 136.6554024385868
+              }
+            ],
+            "description": "以下の順番でデートプランを提案します。このプランでは、観光地の特徴を考慮して滞在時間を設定し、移動時間も含めています。移動は徒歩または公共交通機関を想定しています。デートプラン集合時間: 午前 9:30集合場所: 金沢駅1. 金沢21世紀美術館滞在時間: 10:00 ～ 11:30（1時間30分）現代アートを楽しみながら、自由な雰囲気で会話を楽しめます。【おすすめ】プールのアート（レアンドロ・エルリッヒ作）を見学。移動: 徒歩約15分2. 兼六園滞在時間: 11:45 ～ 13:15（1時間30分）日本三名園のひとつで、美しい庭園を散策しながら自然を満喫。【おすすめ】霞ヶ池の眺望や、ことじ灯籠付近で写真撮影。昼食: 園内または近くのカフェでランチを取る（13:15 ～ 14:00）近くのひがし茶屋街に行って軽食を取るのもおすすめ。移動: 徒歩約10分3. 金沢城跡滞在時間: 14:15 ～ 15:30（1時間15分）城跡公園で歴史を感じながら散策。【おすすめ】石川門や菱櫓（ひしやぐら）を観光。移動: 徒歩約10分4. 尾山神社滞在時間: 15:45 ～ 16:30（45分）神社の独特な和洋折衷の建築を楽しむ。【おすすめ】参拝後、二人で縁結びのお守りを購入。終了予定時間: 16:30その後、金沢駅周辺に戻り、カフェでお茶をしながら今日の感想を語り合うのも良いでしょう。"
+          }
+        ]
+      },
+      "MessagesResponseBody": {
+        "type": "object",
+        "properties": {
+          "facilitys": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "latitude": {
+                  "type": "number",
+                  "format": "double"
+                },
+                "longitude": {
+                  "type": "number",
+                  "format": "double"
+                }
+              }
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "facilitys": [
+            {
+              "name": "金沢21世紀美術館",
+              "latitude": 36.56103500774815,
+              "longitude": 136.6585143674217
+            },
+            {
+              "name": "兼六園",
+              "latitude": 36.562282887579286,
+              "longitude": 136.66268368276226
+            },
+            {
+              "name": "金沢城跡",
+              "latitude": 36.564885272315244,
+              "longitude": 136.65813927098867
+            },
+            {
+              "name": "尾山神社",
+              "latitude": 36.56623894300971,
+              "longitude": 136.6554024385868
+            }
+          ],
+          "description": "以下の順番でデートプランを提案します。このプランでは、観光地の特徴を考慮して滞在時間を設定し、移動時間も含めています。移動は徒歩または公共交通機関を想定しています。デートプラン集合時間: 午前 9:30集合場所: 金沢駅1. 金沢21世紀美術館滞在時間: 10:00 ～ 11:30（1時間30分）現代アートを楽しみながら、自由な雰囲気で会話を楽しめます。【おすすめ】プールのアート（レアンドロ・エルリッヒ作）を見学。移動: 徒歩約15分2. 兼六園滞在時間: 11:45 ～ 13:15（1時間30分）日本三名園のひとつで、美しい庭園を散策しながら自然を満喫。【おすすめ】霞ヶ池の眺望や、ことじ灯籠付近で写真撮影。昼食: 園内または近くのカフェでランチを取る（13:15 ～ 14:00）近くのひがし茶屋街に行って軽食を取るのもおすすめ。移動: 徒歩約10分3. 金沢城跡滞在時間: 14:15 ～ 15:30（1時間15分）城跡公園で歴史を感じながら散策。【おすすめ】石川門や菱櫓（ひしやぐら）を観光。移動: 徒歩約10分4. 尾山神社滞在時間: 15:45 ～ 16:30（45分）神社の独特な和洋折衷の建築を楽しむ。【おすすめ】参拝後、二人で縁結びのお守りを購入。終了予定時間: 16:30その後、金沢駅周辺に戻り、カフェでお茶をしながら今日の感想を語り合うのも良いでしょう。"
+        }
+      }
+    }
+  }
+}
