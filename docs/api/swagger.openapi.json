@@ -3,9 +3,6 @@
   "info": {
     "title": "Swagger スマプロハッカソン2024 REST API DOCS- OpenAPI 3.0",
     "description": "スマプロハッカソン2024のためのREST API仕様書",
-    "contact": {
-      "email": "c1221251@st.kanazawa-it.ac.jp"
-    },
     "version": "0.0.1"
   },
   "externalDocs": {
