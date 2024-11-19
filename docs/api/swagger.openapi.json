@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/api/post": {
+    "/api/chat": {
       "post": {
         "tags": [
           "chat"
