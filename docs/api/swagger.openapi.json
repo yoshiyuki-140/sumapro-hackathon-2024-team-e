@@ -20,7 +20,11 @@
   "tags": [
     {
       "name": "chat",
-      "description": "対話内容を定義"
+      "description": "チャット画面で使われるAPI"
+    },
+    {
+      "name": "result",
+      "description": "デートプラン詳細画面で使われるAPI"
     }
   ],
   "paths": {
@@ -48,6 +52,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MessagesResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request クライアントエラー"
+          },
+          "404": {
+            "description": "Page is not found"
+          },
+          "422": {
+            "description": "バリデーションエラー : リクエストボディーのJSONデータ構造が違う"
+          }
+        }
+      }
+    },
+    "/api/datePlan/restArea": {
+      "post": {
+        "tags": [
+          "result"
+        ],
+        "summary": "訪れる地点の情報から、近くの休憩所の情報を返却する",
+        "description": "最寄りのトイレ、カフェ、コンビニの情報を返却する",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/datePlanRestAreaRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/datePlanRestAreaResponseBody"
                 }
               }
             }
@@ -191,6 +235,134 @@
             }
           ],
           "description": "以下の順番でデートプランを提案します。このプランでは、観光地の特徴を考慮して滞在時間を設定し、移動時間も含めています。移動は徒歩または公共交通機関を想定しています。デートプラン集合時間: 午前 9:30集合場所: 金沢駅1. 金沢21世紀美術館滞在時間: 10:00 ～ 11:30（1時間30分）現代アートを楽しみながら、自由な雰囲気で会話を楽しめます。【おすすめ】プールのアート（レアンドロ・エルリッヒ作）を見学。移動: 徒歩約15分2. 兼六園滞在時間: 11:45 ～ 13:15（1時間30分）日本三名園のひとつで、美しい庭園を散策しながら自然を満喫。【おすすめ】霞ヶ池の眺望や、ことじ灯籠付近で写真撮影。昼食: 園内または近くのカフェでランチを取る（13:15 ～ 14:00）近くのひがし茶屋街に行って軽食を取るのもおすすめ。移動: 徒歩約10分3. 金沢城跡滞在時間: 14:15 ～ 15:30（1時間15分）城跡公園で歴史を感じながら散策。【おすすめ】石川門や菱櫓（ひしやぐら）を観光。移動: 徒歩約10分4. 尾山神社滞在時間: 15:45 ～ 16:30（45分）神社の独特な和洋折衷の建築を楽しむ。【おすすめ】参拝後、二人で縁結びのお守りを購入。終了予定時間: 16:30その後、金沢駅周辺に戻り、カフェでお茶をしながら今日の感想を語り合うのも良いでしょう。"
+        }
+      },
+      "datePlanRestAreaRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "21世紀美術館"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "example": 0
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "example": 0
+          }
+        },
+        "required": [
+          "name",
+          "latitude",
+          "longitude"
+        ],
+        "example": {
+          "name": "21世紀美術館",
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      "datePlanRestAreaResponseBody": {
+        "type": "object",
+        "properties": {
+          "cafe": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "スタバ"
+              },
+              "latitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              },
+              "longitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              }
+            },
+            "required": [
+              "name",
+              "latitude",
+              "longitude"
+            ]
+          },
+          "toilet": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": ""
+              },
+              "latitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              },
+              "longitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              }
+            },
+            "required": [
+              "name",
+              "latitude",
+              "longitude"
+            ]
+          },
+          "convenienceStore": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "ファミリーマート0号"
+              },
+              "latitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              },
+              "longitude": {
+                "type": "number",
+                "format": "double",
+                "example": 0
+              }
+            },
+            "required": [
+              "name",
+              "latitude",
+              "longitude"
+            ]
+          }
+        },
+        "required": [
+          "cafe",
+          "toilet",
+          "convenienceStore"
+        ],
+        "example": {
+          "cafe": {
+            "name": "スタバ",
+            "latitude": 0,
+            "longitude": 0
+          },
+          "toilet": {
+            "name": "",
+            "latitude": 0,
+            "longitude": 0
+          },
+          "convenienceStore": {
+            "name": "ファミリーマート0号",
+            "latitude": 0,
+            "longitude": 0
+          }
         }
       }
     }
