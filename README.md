@@ -80,10 +80,12 @@
 └── frontend        # フロントエンドのコード(Next.js)
 ```
 
+## サービスのワイヤーフレーム(Figma)
+
+- https://www.figma.com/design/vPFKduSEm0pkDBJ64GnLN6/%E3%82%B9%E3%83%9E%E3%83%97%E3%83%AD%E3%83%8F%E3%83%83%E3%82%AB%E3%82%BD%E3%83%B32024-%E6%88%90%E6%9E%9C%E7%89%A9?node-id=0-1&t=OqXdADgUJyfpEI5m-1
 
 
-
-## Web API仕様書
+## Web API仕様書(Swagger/GithubPages)
 
 - https://yoshiyuki-140.github.io/sumapro-hackathon-2024-team-e/swagger/
 
