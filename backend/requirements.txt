@@ -1,0 +1,8 @@
+openai # chatgptのapi呼び出し用
+fastapi[all] # FastAPI
+python-dotenv # .env読み込み用
+
+# フォーマッター
+black
+isort
+autoflake
