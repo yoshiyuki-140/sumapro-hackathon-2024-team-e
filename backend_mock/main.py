@@ -30,14 +30,6 @@ class ChatLog(BaseModel):
     pass
 
 
-class datePlanRequestBody(BaseModel):
-    """
-    今までの会話履歴を送信するためのスキーマ
-    """
-
-    List[ChatLog]
-
-
 class datePlanReqponseBody(BaseModel):
     """"""
 
