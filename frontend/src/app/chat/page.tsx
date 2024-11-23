@@ -84,25 +84,27 @@ export default function Chat() {
       </div>
 
       {/* 入力フォーム */}
-      <div className="mt-4 flex items-center">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendRequestBody()}
-          className="flex-grow p-2 border rounded-l shadow-sm text-black"
-          placeholder="メッセージを入力"
-        />
-        <button
-          onClick={sendRequestBody}
-          className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
-        >
-          <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-          </svg>
+      <div className="flex justify-center">
+        <div className="mt-4 flex items-center w-4/5">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendRequestBody()}
+            className="flex-grow p-2 border rounded-l shadow-sm text-black focus:outline-none"
+            placeholder="メッセージを入力"
+          />
+          <button
+            onClick={sendRequestBody}
+            className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
+          >
+            <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+            </svg>
 
-          {/* 送信 */}
-        </button>
+            {/* 送信 */}
+          </button>
+        </div>
       </div>
     </div>
   );
