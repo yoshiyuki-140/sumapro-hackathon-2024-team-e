@@ -6,9 +6,6 @@ import { ChatRequestBody, ChatResponseBody, Message } from "@/types/api";
 export default function Chat() {
   const [chatRequestBody, setRequestBody] = useState<ChatRequestBody>([]);
   const [input, setInput] = useState("");
-  // useEffect(() => {
-  // console.log("Updated chatRequestBody:", chatRequestBody);
-  // }, [chatRequestBody]);
 
   const sendRequestBody = async () => {
     const trimmedInput = input.trim();
@@ -98,11 +95,10 @@ export default function Chat() {
             onClick={sendRequestBody}
             className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
           >
+            {/* 矢印アイコン */}
             <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
             </svg>
-
-            {/* 送信 */}
           </button>
         </div>
       </div>
