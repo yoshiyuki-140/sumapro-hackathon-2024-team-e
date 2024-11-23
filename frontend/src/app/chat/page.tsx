@@ -59,6 +59,9 @@ export default function Chat() {
               // roleがsystemの場合（左寄せ）
               <div className="flex flex-row">
                 <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
+                  <div>
+                    ここに地図を表示
+                  </div>
                   <span>
                     {msg.facilitys?.map((facility, index) => (
                       <div key={index} className="item bg-red-300 my-3 mx-0 p-3 rounded-lg">
@@ -66,6 +69,12 @@ export default function Chat() {
                       </div>
                     ))}
                   </span>
+                  <div>ここにDescriptionを表示</div>
+                  <div className="flex flex-row justify-center my-10">
+                    <button className="bg-red-400 p-3 rounded-full border-black border">
+                      詳細確認ボタン
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
