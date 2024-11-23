@@ -1,4 +1,5 @@
 from typing import List
+from time import sleep
 
 from fastapi import FastAPI, Body
 from starlette.middleware.cors import CORSMiddleware
@@ -26,11 +27,19 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
     Returns:
         _type_: _description_
     """
+    # wait 1 second
+    # sleep(1)
+
+    # show log
     print(chatlogs)
+
+    # create dummy data
     dummy_data = [
         {"name": "string1", "latitude": 0, "longitude": 0},
         {"name": "string2", "latitude": 0, "longitude": 0},
     ]
+
+    # return response of json data
     return {
         "facilitys": [
             {
