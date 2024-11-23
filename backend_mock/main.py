@@ -38,5 +38,27 @@ class datePlanReqponseBody(BaseModel):
 
 
 @app.post("/api/datePlan", response_model=datePlanReqponseBody)
-def apiDatePlan(data: List[ChatLog]):
-    pass
+def apiDatePlan(chatlogs: List[ChatLog]):
+    """chat画面のAPIモック
+
+    Args:
+        chatlogs (List[ChatLog]): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    dummy_data = [
+        {"name": "string1", "latitude": 0, "longitude": 0},
+        {"name": "string2", "latitude": 0, "longitude": 0},
+    ]
+    return {
+        "facilitys": [
+            {
+                "name": data["name"],
+                "latitude": data["latitude"],
+                "longitude": data["longitude"],
+            }
+            for data in dummy_data
+        ],
+        "description": "これはテストです",
+    }
