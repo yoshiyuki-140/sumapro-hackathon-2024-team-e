@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from starlette.middleware.cors import CORSMiddleware
 
 import schemas
@@ -16,8 +16,8 @@ app.add_middleware(
 )
 
 
-@app.post("/api/datePlan", response_model=schemas.datePlanReqponseBody)
-def apiDatePlan(chatlogs: List[schemas.ChatLog]):
+@app.post("/api/datePlan", response_model=schemas.datePlanResponseBody)
+def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
     """chat画面のAPIモック
 
     Args:
@@ -26,6 +26,7 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog]):
     Returns:
         _type_: _description_
     """
+    print(chatlogs)
     dummy_data = [
         {"name": "string1", "latitude": 0, "longitude": 0},
         {"name": "string2", "latitude": 0, "longitude": 0},

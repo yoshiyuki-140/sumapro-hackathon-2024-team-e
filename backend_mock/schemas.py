@@ -26,8 +26,9 @@ class ChatLog(BaseModel):
     description: str
 
 
-class datePlanReqponseBody(BaseModel):
+class datePlanResponseBody(BaseModel):
     """"""
 
     facilitys: List[Facility]
     description: str
+
