@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
@@ -22,7 +24,6 @@ class ChatLog(BaseModel):
     message: str
     facilitys: List[Facility]
     description: str
-    pass
 
 
 class datePlanReqponseBody(BaseModel):
