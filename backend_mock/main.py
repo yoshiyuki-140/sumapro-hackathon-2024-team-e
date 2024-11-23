@@ -1,44 +1,12 @@
-from dotenv import load_dotenv
 from fastapi import FastAPI
-from pydantic import BaseModel
 from typing import List
+import schemas
 
 app = FastAPI()
 
 
-class Facility(BaseModel):
-    """
-    施設名
-    緯度
-    経度
-    """
-
-    name: str
-    latitude: int
-    longitude: int
-
-
-class ChatLog(BaseModel):
-    """
-    チャット履歴
-    """
-
-    role: str
-    message: str
-    facilitys: List[Facility]
-    description: str
-    pass
-
-
-class datePlanReqponseBody(BaseModel):
-    """"""
-
-    facilitys: List[Facility]
-    description: str
-
-
-@app.post("/api/datePlan", response_model=datePlanReqponseBody)
-def apiDatePlan(chatlogs: List[ChatLog]):
+@app.post("/api/datePlan", response_model=schemas.datePlanReqponseBody)
+def apiDatePlan(chatlogs: List[schemas.ChatLog]):
     """chat画面のAPIモック
 
     Args:
