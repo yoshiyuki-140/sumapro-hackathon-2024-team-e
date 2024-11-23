@@ -1,13 +1,16 @@
-from pydantic import BaseModel
 from typing import List
 
-class facilitys(BaseModel):
+from pydantic import BaseModel
+
+
+class Facilitys(BaseModel):
     name: str
-    latitude: int
-    longitude: int
+    # latitude: int
+    # longitude: int
+
 
 class RequestBodyData(BaseModel):
     role: str
-    massege: str
-    facilitys: List[facilitys]
+    message: str
+    facilitys: List[Facilitys]
     description: str

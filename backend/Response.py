@@ -1,7 +1,10 @@
-from pydantic import BaseModel
 from typing import List
-from backend.Request import facilitys
+
+from pydantic import BaseModel
+
+from Request import Facilitys
+
 
 class ResponseBodyData(BaseModel):
-    facilitys:List[facilitys]
+    facilitys: List[Facilitys]
     description: str
