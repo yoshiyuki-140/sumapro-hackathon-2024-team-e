@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChatRequestBody, ChatResponseBody, Message } from "@/types/api";
 
 export default function Chat() {
@@ -36,7 +36,7 @@ export default function Chat() {
         throw new Error(`HTTP error! status code : ${response.status}`)
       }
 
-      const serverMessage: ChatResponseBody= await response.json();
+      const serverMessage: ChatResponseBody = await response.json();
 
       setRequestBody((prev) => [
         ...prev,
