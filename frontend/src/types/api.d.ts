@@ -5,7 +5,7 @@ export type Facility = {
   // 緯度
   latitude: number;
   // 経度
-  logitude: number;
+  longitude: number;
 }
 
 // メッセージ

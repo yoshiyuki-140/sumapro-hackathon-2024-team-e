@@ -34,14 +34,14 @@ const CustomizedGoogleMap: React.FC<MapProps> = ({ center, facilities }) => {
         <LoadScript googleMapsApiKey={apiKey}>
             <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={{ lat: center.latitude, lng: center.logitude }} // 初期画面中心位置
+                center={{ lat: center.latitude, lng: center.longitude }} // 初期画面中心位置
                 zoom={zoom}
             >
                 {/* 訪れる場所のマーカーを描画 */}
                 {facilities.map((location, index) => (
                     <Marker
                         key={index}
-                        position={{ lat: location.latitude, lng: location.logitude }}
+                        position={{ lat: location.latitude, lng: location.longitude }}
                         label={location.name} // 任意でラベル表示
                     />
                 ))}

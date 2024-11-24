@@ -1,8 +1,8 @@
 'use client';
 
 import React from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Facility } from "@/types/api";
+import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 
 type coordinate = {
     lat: number;
@@ -39,9 +39,10 @@ export default function Map() {
     };
 
     // マップ中心部の画像
-    const center: coordinate = {
-        lat: 34.7293466708865,
-        lng: 135.49939605607292
+    const center: Facility = {
+        name: "",
+        latitude: 34.7293466708865,
+        logitude: 135.49939605607292
     };
 
     const zoom = 13;
@@ -55,23 +56,10 @@ export default function Map() {
 
     return (
         <div>
-            <div>
-                <LoadScript googleMapsApiKey={apiKey}>
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={center}
-                        zoom={zoom}
-                    >
-                        {locations.map((location, index) => (
-                            <Marker
-                                key={index}
-                                position={{ lat: location.latitude, lng: location.latitude }}
-                                label={location.name} // マーカーにラベルを表示（任意）
-                            />
-                        ))}
-                    </GoogleMap>
-                </LoadScript>
-            </div>
+            <CustomizedGoogleMap
+                center={center}
+                facilities={locations}
+            ></CustomizedGoogleMap>
         </div>
     )
 

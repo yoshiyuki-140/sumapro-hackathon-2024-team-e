@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Messages, SuggestMessage, Facility, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 
@@ -8,11 +8,13 @@ import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 export default function Chat() {
   const [chatMessages, setMessages] = useState<Messages>([]);
   const [input, setInput] = useState("");
-  const [serverMessage, setServerMessage] = useState<SuggestMessage | null>(null);
+  const [suggestMessage, setSuggestMessage] = useState<SuggestMessage | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const mapCenter: Facility = {
     name: "",
     latitude: 36.5287888480469,
-    logitude: 136.62829796528777
+    longitude: 136.62829796528777
   };
 
   // リクエストボディーを送信する関数を定義
@@ -35,6 +37,9 @@ export default function Chat() {
     // input変数の中身を空文字列で初期化
     setInput("");
 
+    // isLoaded変数の中身をfalseで初期化
+    setIsLoaded(false);
+
     // APIエントリポイントにリクエスト
     try {
       // エントリポイントリクエスト
@@ -51,10 +56,10 @@ export default function Chat() {
       const suggest: SuggestMessage = await response.json();
 
       // サーバーメッセージを状態として保存
-      setServerMessage(suggest);
+      setSuggestMessage(suggest);
 
-      console.log("This is facilitys : " + suggest.facilitys);
-      console.log("This is description : " + suggest.description);
+      console.log("This is facilitys : " + suggestMessage?.facilitys);
+      console.log("This is description : " + suggestMessage?.description);
 
 
       // AIからのデートプラン提案内容を保存
@@ -73,6 +78,16 @@ export default function Chat() {
     }
   };
 
+  // suggestMessageの更新を監視し`isLoaded`を更新
+  useEffect(
+    () => {
+      if (suggestMessage != undefined) {
+        setIsLoaded(true);
+      }
+    },
+    [suggestMessage]
+  );
+
   return (
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
@@ -85,13 +100,18 @@ export default function Chat() {
                 <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
                   <div>
                     {/* GoogleMapを表示 */}
-                    {serverMessage?.facilitys && (
-                        <CustomizedGoogleMap
-                          center={mapCenter}
-                          facilities={serverMessage?.facilitys}
-                        >
-                        </CustomizedGoogleMap>
-                      )}
+                    {suggestMessage && isLoaded ? (
+                      <CustomizedGoogleMap
+                        center={{
+                          name: suggestMessage.facilitys[0]?.name || "Default Center",
+                          latitude: suggestMessage.facilitys[0]?.latitude || 36.5287888480469,
+                          longitude: suggestMessage.facilitys[0]?.longitude || 136.62829796528777,
+                        }}
+                        facilities={suggestMessage?.facilitys}
+                      />
+                    ) : (
+                      <p>Loading map...</p> // ローディング中の表示
+                    )}
                   </div>
                   <span>
                     {msg.facilitys?.map((facility, index) => (
