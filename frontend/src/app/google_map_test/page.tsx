@@ -1,13 +1,34 @@
 'use client';
 
 import React from "react";
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { Facility } from "@/types/api";
 
 type coordinate = {
     lat: number;
     lng: number;
 };
 
+// 訪れる地点のデータ型を定義（名前付き）
+type Location = {
+    lat: number;
+    lng: number;
+    name: string;
+};
+
+// 訪れる地点のリスト
+const locations: Facility[] = [
+    { latitude: 34.6937, logitude: 135.5023, name: "大阪駅" },
+    { latitude: 34.7025, logitude: 135.4959, name: "梅田スカイビル" },
+    // 他の地点を追加
+];
+
+
+// Mapコンポーネントが受け取る型
+type MapProps = {
+    center: Facility;
+    facilities: Facility[]; // 訪れる施設一覧
+}
 
 export default function Map() {
 
@@ -30,7 +51,6 @@ export default function Map() {
     if (apiKey === "") {
         console.error("Google Map呼び出しのAPIキーがきちんと読み込まれていません");
     }
-    console.log(apiKey)
 
 
     return (
@@ -41,7 +61,15 @@ export default function Map() {
                         mapContainerStyle={containerStyle}
                         center={center}
                         zoom={zoom}
-                    ></GoogleMap>
+                    >
+                        {locations.map((location, index) => (
+                            <Marker
+                                key={index}
+                                position={{ lat: location.lat, lng: location.lng }}
+                                label={location.name} // マーカーにラベルを表示（任意）
+                            />
+                        ))}
+                    </GoogleMap>
                 </LoadScript>
             </div>
         </div>
