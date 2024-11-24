@@ -6,9 +6,16 @@ import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 
 
 export default function Chat() {
+  // ユーザーからのメッセージを格納する変数
   const [chatMessages, setMessages] = useState<Messages>([]);
+
+  // メッセージ送信フォームの入力内容を一時的に格納する変数
   const [input, setInput] = useState("");
+
+  // AIからのメッセージを格納する変数
   const [suggestMessage, setSuggestMessage] = useState<SuggestMessage | null>(null);
+
+  // デートスポットが読み込まれたか否かという情報を格納するフラグ変数
   const [isLoaded, setIsLoaded] = useState(false);
 
   // リクエストボディーを送信する関数を定義
