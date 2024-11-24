@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { Facility } from "@/types/api";
-import { MapProps, Coordinate } from "@/types/customized.google.map";
+import { MapProps } from "@/types/customized.google.map";
 
 
 
@@ -29,14 +29,14 @@ const Map: React.FC<MapProps> = ({ center, facilities }) => {
         <LoadScript googleMapsApiKey={apiKey}>
             <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={{ lat: center.latitude, lng: center.logitude }}
+                center={{ lat: center.latitude, lng: center.longitude }}
                 zoom={zoom}
             >
                 {/* 訪れる場所のマーカーを描画 */}
                 {facilities.map((location, index) => (
                     <Marker
                         key={index}
-                        position={{ lat: location.latitude, lng: location.logitude }}
+                        position={{ lat: location.latitude, lng: location.longitude }}
                         onClick={() => setSelectedFacility(location)} // マーカークリックで選択状態にする
                         label={location.name} // 任意でラベル表示
                     />
@@ -45,7 +45,7 @@ const Map: React.FC<MapProps> = ({ center, facilities }) => {
                 {/* マーカークリック時に情報ウィンドウを表示 */}
                 {selectedFacility && (
                     <InfoWindow
-                        position={{ lat: selectedFacility.latitude, lng: selectedFacility.logitude }}
+                        position={{ lat: selectedFacility.latitude, lng: selectedFacility.longitude }}
                         onCloseClick={() => setSelectedFacility(null)} // ウィンドウを閉じる
                     >
                         <div>
