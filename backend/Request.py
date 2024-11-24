@@ -9,7 +9,7 @@ class Facilitys(BaseModel):
     # longitude: int
 
 
-class RequestBodyData(BaseModel):
+class MessageData(BaseModel):
     role: str
     message: str
     facilitys: List[Facilitys]

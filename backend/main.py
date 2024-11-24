@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from openai import OpenAI
 
-from Request import RequestBodyData
+from chatgpt import question_description, question_name
+from openai import OpenAI
+from Request import MessageData
 from Response import ResponseBodyData
 
 app = FastAPI()
@@ -10,42 +11,14 @@ load_dotenv()
 client = OpenAI()
 
 
-@app.post("/DatePlan")
-def question(Request: RequestBodyData):
-    # デートプラン情報を提案するアシスタント機能
-    Description_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "デートプラン情報を提案するアシスタントです。",
-            },
-            {"role": "user", "content": Request.message},
-        ],
-    )
-    # デートの中で訪れる場所の名前だけを取得する機能
-    Name_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "デートの中で訪れる場所の名前だけを取得する。",
-            },
-            {
-                "role": "system",
-                "content": Description_response.choices[0].message.content,
-            },
-        ],
-    )
+@app.post("/api/datePlan")
+def question(Request: MessageData):
 
-    print(Name_response.choices[0].message.content)
-    print(Description_response.choices[0].message.content)
+    # デートプラン情報を提案する説明文取得
+    Description_content = question_description(Request.message)
 
-    # 提案された建物名だけを取得
-    Name_content = Name_response.choices[0].message.content
-
-    # 提案された説明文を取得
-    Description_content = Description_response.choices[0].message.content
+    # デートの中で訪れる場所の名前だけを取得
+    Name_content = question_name(Request.message)
 
     # 取得した場所のみのデータを不要な空白を取り除く、改行区切りでリストに格納
     facility_list = [
