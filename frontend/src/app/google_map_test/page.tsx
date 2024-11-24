@@ -65,7 +65,7 @@ export default function Map() {
                         {locations.map((location, index) => (
                             <Marker
                                 key={index}
-                                position={{ lat: location.lat, lng: location.lng }}
+                                position={{ lat: location.latitude, lng: location.latitude }}
                                 label={location.name} // マーカーにラベルを表示（任意）
                             />
                         ))}
