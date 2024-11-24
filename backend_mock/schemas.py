@@ -11,8 +11,8 @@ class Facility(BaseModel):
     """
 
     name: str
-    latitude: int
-    longitude: int
+    latitude: float
+    longitude: float
 
 
 class ChatLog(BaseModel):

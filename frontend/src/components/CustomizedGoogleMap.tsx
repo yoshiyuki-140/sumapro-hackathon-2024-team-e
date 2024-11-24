@@ -10,7 +10,7 @@ const CustomizedGoogleMap: React.FC<MapProps> = ({ center, facilities }) => {
     // Map形式
     const containerStyle = {
         width: "100%",
-        height: "86vh",
+        height: "100vh",
     };
 
     // ズームレベル
@@ -21,6 +21,12 @@ const CustomizedGoogleMap: React.FC<MapProps> = ({ center, facilities }) => {
     const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "";
     if (!apiKey) {
         console.error("Google Map APIキーが設定されていません。");
+    }
+
+    // ログを表示
+    for (let i = 0; i < facilities.length; i++) {
+        const element = facilities[i];
+        console.log(i, element);
     }
 
 

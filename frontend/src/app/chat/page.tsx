@@ -1,13 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { ChatRequestBody, ChatResponseBody, Message } from "@/types/api";
+import { Messages, SuggestMessage, Facility, Message } from "@/types/api";
+import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
+
 
 export default function Chat() {
-  const [chatRequestBody, setRequestBody] = useState<ChatRequestBody>([]);
+  const [chatMessages, setMessages] = useState<Messages>([]);
   const [input, setInput] = useState("");
+  const [serverMessage, setServerMessage] = useState<SuggestMessage | null>(null);
+  const mapCenter: Facility = {
+    name: "",
+    latitude: 36.5287888480469,
+    logitude: 136.62829796528777
+  };
 
-  const sendRequestBody = async () => {
+  // リクエストボディーを送信する関数を定義
+  const sendMessages = async () => {
+    // inputの中身を読み取り
     const trimmedInput = input.trim();
     if (!trimmedInput) return;
 
@@ -18,32 +28,46 @@ export default function Chat() {
       description: "",
     };
 
-    const updatedRequestBody = [...chatRequestBody, userMessage]
-    setRequestBody(updatedRequestBody);
+    // userメッセージを保存
+    const updatedMessages = [...chatMessages, userMessage]
+    setMessages(updatedMessages);
+
+    // input変数の中身を空文字列で初期化
     setInput("");
 
+    // APIエントリポイントにリクエスト
     try {
+      // エントリポイントリクエスト
       const response = await fetch("http://localhost:8000/api/datePlan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedRequestBody),
+        body: JSON.stringify(updatedMessages),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status code : ${response.status}`)
       }
 
-      const serverMessage: ChatResponseBody = await response.json();
+      const suggest: SuggestMessage = await response.json();
 
-      setRequestBody((prev) => [
+      // サーバーメッセージを状態として保存
+      setServerMessage(suggest);
+
+      console.log("This is facilitys : " + suggest.facilitys);
+      console.log("This is description : " + suggest.description);
+
+
+      // AIからのデートプラン提案内容を保存
+      setMessages((prev) => [
         ...prev,
         {
           role: "system",
           message: "",
-          facilitys: serverMessage.facilitys,
-          description: serverMessage.description,
+          facilitys: suggest.facilitys,
+          description: suggest.description,
         },
       ]);
+
     } catch (error) {
       console.error("Failed to fetch response:", error);
     }
@@ -53,14 +77,21 @@ export default function Chat() {
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
       <div className="flex-grow overflow-y-auto bg-white p-4 rounded shadow">
-        {chatRequestBody?.map((msg, index) => (
+        {chatMessages?.map((msg, index) => (
           <div key={index} className="mb-4">
             {msg.role === "system" ? (
               // roleがsystemの場合（左寄せ）
               <div className="flex flex-row">
-                <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
+                <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
                   <div>
-                    ここに地図を表示
+                    {/* GoogleMapを表示 */}
+                    {serverMessage?.facilitys && (
+                        <CustomizedGoogleMap
+                          center={mapCenter}
+                          facilities={serverMessage?.facilitys}
+                        >
+                        </CustomizedGoogleMap>
+                      )}
                   </div>
                   <span>
                     {msg.facilitys?.map((facility, index) => (
@@ -96,12 +127,12 @@ export default function Chat() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendRequestBody()}
+            onKeyDown={(e) => e.key === "Enter" && sendMessages()}
             className="flex-grow p-2 border rounded-l shadow-sm text-black focus:outline-none"
             placeholder="メッセージを入力"
           />
           <button
-            onClick={sendRequestBody}
+            onClick={sendMessages}
             className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
           >
             {/* 矢印アイコン */}

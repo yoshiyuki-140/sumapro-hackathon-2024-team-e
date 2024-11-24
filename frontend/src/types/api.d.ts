@@ -20,12 +20,12 @@ export type Message = {
   description: string;
 }
 
-// Chat画面のリクエストボディー
-export type ChatRequestBody = Message[];
+// 今までの会話内容を格納する型
+export type Messages = Message[];
 
 
-// Chat画面のレスポンスボディー
-export type ChatResponseBody = {
+// AIからのデートプランの提案を格納する型
+export type SuggestMessage = {
   facilitys: Facility[];
   description: string;
 };

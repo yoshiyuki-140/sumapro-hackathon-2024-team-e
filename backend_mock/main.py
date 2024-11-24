@@ -35,8 +35,16 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
 
     # create dummy data
     dummy_data = [
-        {"name": "string1", "latitude": 0, "longitude": 0},
-        {"name": "string2", "latitude": 0, "longitude": 0},
+        {
+            "name": "兼六園",
+            "latitude": 36.56226565256541,
+            "longitude": 136.66258712337654,
+        },
+        {
+            "name": "21世紀美術館",
+            "latitude": 36.56102676055879,
+            "longitude": 136.6584872199715,
+        },
     ]
 
     # return response of json data
