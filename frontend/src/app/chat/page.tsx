@@ -71,7 +71,7 @@ export default function Chat() {
                   </span>
                   <div>ここにDescriptionを表示</div>
                   <div className="flex flex-row justify-center my-10">
-                    <button className="bg-red-400 p-3 rounded-full border-black border">
+                    <button className="bg-red-400 p-3 rounded-full border-black border-2">
                       詳細確認ボタン
                     </button>
                   </div>
