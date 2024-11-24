@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Messages, SuggestMessage, Facility, Message } from "@/types/api";
+import { Messages, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 
 
@@ -10,12 +10,6 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [suggestMessage, setSuggestMessage] = useState<SuggestMessage | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-
-  const mapCenter: Facility = {
-    name: "",
-    latitude: 36.5287888480469,
-    longitude: 136.62829796528777
-  };
 
   // リクエストボディーを送信する関数を定義
   const sendMessages = async () => {
