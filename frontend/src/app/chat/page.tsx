@@ -79,6 +79,7 @@ export default function Chat() {
   };
 
   // suggestMessageの更新を監視し`isLoaded`を更新
+  // これがないと、デートスポットの情報がロードされないままGoogleMapAPIを呼び出してしまって、描写が失敗する
   useEffect(
     () => {
       if (suggestMessage != undefined) {
@@ -100,6 +101,7 @@ export default function Chat() {
                 <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
                   <div>
                     {/* GoogleMapを表示 */}
+                    {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
                     {suggestMessage && isLoaded ? (
                       <CustomizedGoogleMap
                         center={{
