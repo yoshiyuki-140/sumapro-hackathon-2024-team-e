@@ -117,13 +117,17 @@ export default function Chat() {
                     )}
                   </div>
                   <span>
+                    {/* Mapにピンを配置 */}
                     {msg.facilitys?.map((facility, index) => (
                       <div key={index} className="item bg-red-300 my-3 mx-0 p-3 rounded-lg">
                         {facility.name}
                       </div>
                     ))}
                   </span>
-                  <div>ここにDescriptionを表示</div>
+                  <div>
+                    {/* デートプランの説明 */}
+                    {isLoaded ? suggestMessage?.description : (<p>Loading Description...</p>)}
+                  </div>
                   <div className="flex flex-row justify-center my-10">
                     <button className="bg-red-400 p-3 rounded-full border-black border-2">
                       詳細確認ボタン
