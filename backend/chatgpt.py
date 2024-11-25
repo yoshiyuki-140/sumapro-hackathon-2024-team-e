@@ -1,10 +1,12 @@
-from dotenv import load_dotenv
+import re
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from Request import MessageData
 
 load_dotenv()
 client = OpenAI()
+
 
 # デートプラン情報を提案するアシスタント機能
 def question_description(Request: MessageData):
@@ -22,8 +24,6 @@ def question_description(Request: MessageData):
     return Description_response.choices[0].message.content
 
 
-
-
 # デートの中で訪れる場所の名前だけを取得する機能
 def question_name(Request: MessageData):
     Name_response = client.chat.completions.create(
@@ -33,26 +33,29 @@ def question_name(Request: MessageData):
                 "role": "system",
                 "content": "デートの中で訪れる場所の名前だけを取得する。",
             },
-            {"role": "system", "content": question_description(Request)
-            },
+            {"role": "system", "content": question_description(Request)},
         ],
     )
     return Name_response.choices[0].message.content
 
 
+import re
 
 
-## 取得した場所のみのデータをname: nameの形に整形する
-def Change_Data(Name_content):
-
-    # 取得した場所のみのデータを不要な空白を取り除く、改行区切りでリストに格納
-    facility_list = [
-        line.split(". ", 1)[1].strip()
-        for line in Name_content.split("\n")
-        if line.strip()
+def clean_description(description_content):
+    # 不要な部分のパターンを定義
+    patterns = [
+        r"\*\*.*?\*\*",  # **で囲まれた部分（太字）
+        r"###.*",  # ### で始まる行
+        r"\n[0-9]\.",  # 数字付きリスト
+        r"（.*?）",  # （）で囲まれた内容
     ]
 
-    # リストに格納したデータをname: nameの形で返す
-    Facility_names = [{"name": name} for name in facility_list]
+    # 各パターンを削除
+    for pattern in patterns:
+        description_content = re.sub(pattern, "", description_content)
 
-    return Facility_names
+    # 空白行の削除と整形
+    description_content = re.sub(r"\n+", "\n", description_content).strip()
+
+    return description_content
