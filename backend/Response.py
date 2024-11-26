@@ -2,9 +2,13 @@ from typing import List
 
 from pydantic import BaseModel
 
-from Request import Facilitys
+from request import Facilitys
 
 
-class ResponseBodyData(BaseModel):
+class MessageResponseBody(BaseModel):
     facilitys: List[Facilitys]
     description: str
+
+
+#class RestAreaResponseBody(BaseModel):
+    #cafe: RestAreaResponseBody

@@ -9,8 +9,10 @@ API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-# place_namesの場所の名前から緯度経度を取得する
-def Place_Data(place_names):
+def get_place_data(place_names):
+    """
+    place_namesの場所の名前から緯度経度を取得する
+    """
     location_data = []
 
     for name in place_names:
@@ -28,8 +30,10 @@ def Place_Data(place_names):
     return location_data
 
 
-# 取得した場所のみのデータを整形してリストに格納
-def Change_Data(Name_content):
+def get_change_data(Name_content):
+    """
+    取得した場所のみのデータを整形してリストに格納
+    """
 
     # 取得した場所のみのデータを不要な空白を取り除く、改行区切りでリストに格納
     facility_list = []
@@ -42,8 +46,10 @@ def Change_Data(Name_content):
     return facility_list
 
 
-# 取得した場所の名前とその場所の緯度経度を合体
-def Place_All(place_names, place_data):
+def get_place_all(place_names, place_data):
+    """
+    取得した場所の名前とその場所の緯度経度を合体
+    """
     place_all = []
     for i in range(len(place_names)):
         place_all.append(

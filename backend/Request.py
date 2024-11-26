@@ -9,8 +9,14 @@ class Facilitys(BaseModel):
     longitude: Optional[float]
 
 
-class MessageData(BaseModel):
+class MessageRequestBody(BaseModel):
     role: str
     message: str
     facilitys: List[Facilitys]
     description: str
+
+
+class RestAreaRequestBody(BaseModel):
+    name: str
+    latitude: Optional[float]
+    longitude: Optional[float]

@@ -3,15 +3,16 @@ import re
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from Request import MessageData
+from request import MessageData
 
 load_dotenv()
 client = OpenAI()
 
 
-# デートプラン情報を提案するアシスタント機能
 def question_description(Request: MessageData):
-
+    """
+    デートプラン情報を提案するアシスタント機能
+    """
     Description_response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -25,8 +26,10 @@ def question_description(Request: MessageData):
     return Description_response.choices[0].message.content
 
 
-# デートの中で訪れる場所の名前だけを取得する機能
 def question_name(Request: MessageData):
+    """
+    デートの中で訪れる場所の名前だけを取得する機能
+    """
     Name_response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -40,11 +43,10 @@ def question_name(Request: MessageData):
     return Name_response.choices[0].message.content
 
 
-import re
-
-
 def clean_description(description_content):
-    # 不要な部分のパターンを定義
+    """
+    不要な文字のパターンを定義し削除する
+    """
     patterns = [
         r"\*\*.*?\*\*",  # **で囲まれた部分（太字）
         r"###.*",  # ### で始まる行

@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from openai import OpenAI
 
 from chatgpt import clean_description, question_description, question_name
-from googlemap_api import Change_Data, Place_All, Place_Data
-from Request import MessageData
-from Response import ResponseBodyData
+from googlemap_api import get_change_data, get_place_all, get_place_data
+from request import MessageRequestBody
+from response import MessageResponseBody
 
 app = FastAPI()
 load_dotenv()
@@ -13,7 +13,10 @@ client = OpenAI()
 
 
 @app.post("/api/datePlan")
-def question(Request: MessageData):
+def question(Request: MessageRequestBody):
+    """
+    取得したデートプラン情報をMessageRequestBodyDataの型にはめ込む関数
+    """
 
     # デートプラン情報を提案する説明文取得
     Description_content = question_description(Request)
@@ -25,15 +28,15 @@ def question(Request: MessageData):
     name_content = question_name(Request)
 
     # 取得した場所のみのデータを整形してリストに格納
-    place_names = Change_Data(name_content)
+    place_names = get_change_data(name_content)
 
     # 取得した場所のみの緯度経度を取得する
-    place_data = Place_Data(place_names)
+    place_data = get_place_data(place_names)
 
     # 取得した場所の名前とその場所の緯度経度を合体
-    place_all = Place_All(place_names, place_data)
+    place_all = get_place_all(place_names, place_data)
 
-    return ResponseBodyData(
+    return MessageResponseBody(
         facilitys=place_all,
         description=Clean_description,
     )
