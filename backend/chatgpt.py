@@ -2,6 +2,7 @@ import re
 
 from dotenv import load_dotenv
 from openai import OpenAI
+
 from Request import MessageData
 
 load_dotenv()
@@ -57,5 +58,8 @@ def clean_description(description_content):
 
     # 空白行の削除と整形
     description_content = re.sub(r"\n+", "\n", description_content).strip()
+
+    # \nの文字削除
+    description_content = description_content.replace("\n", "")
 
     return description_content

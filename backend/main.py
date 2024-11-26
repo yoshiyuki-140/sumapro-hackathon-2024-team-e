@@ -1,8 +1,9 @@
-from chatgpt import clean_description, question_description, question_name
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from googlemap_api import Change_Data, Place_All, Place_Data
 from openai import OpenAI
+
+from chatgpt import clean_description, question_description, question_name
+from googlemap_api import Change_Data, Place_All, Place_Data
 from Request import MessageData
 from Response import ResponseBodyData
 
@@ -31,7 +32,6 @@ def question(Request: MessageData):
 
     # 取得した場所の名前とその場所の緯度経度を合体
     place_all = Place_All(place_names, place_data)
-
 
     return ResponseBodyData(
         facilitys=place_all,
