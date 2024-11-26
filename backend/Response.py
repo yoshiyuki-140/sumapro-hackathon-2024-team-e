@@ -8,6 +8,3 @@ from request import Facilitys
 class MessageResponseBody(BaseModel):
     facilitys: List[Facilitys]
     description: str
-
-
-

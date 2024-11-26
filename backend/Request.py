@@ -14,9 +14,3 @@ class MessageRequestBody(BaseModel):
     message: str
     facilitys: List[Facilitys]
     description: str
-
-
-class RestAreaRequestBody(BaseModel):
-    name: str
-    latitude: Optional[float]
-    longitude: Optional[float]
