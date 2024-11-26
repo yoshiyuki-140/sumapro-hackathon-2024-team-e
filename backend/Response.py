@@ -10,5 +10,4 @@ class MessageResponseBody(BaseModel):
     description: str
 
 
-#class RestAreaResponseBody(BaseModel):
-    #cafe: RestAreaResponseBody
+
