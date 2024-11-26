@@ -16,7 +16,4 @@ class MessageRequestBody(BaseModel):
     description: str
 
 
-class RestAreaRequestBody(BaseModel):
-    name: str
-    latitude: Optional[float]
-    longitude: Optional[float]
+
