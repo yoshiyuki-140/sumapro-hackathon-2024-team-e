@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import { Messages, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
+import { useRouter } from "next/navigation";
 
 
 export default function Chat() {
+  // リダイレクトを実現するためにuseRouterを使う
+  const router = useRouter();
+
   // ユーザーからのメッセージを格納する変数
   const [chatMessages, setMessages] = useState<Messages>([]);
 
@@ -90,6 +94,15 @@ export default function Chat() {
     [suggestMessage]
   );
 
+  // sessionStrageに最新のデートプランを保存して画面遷移を行う関数
+  const saveDatePlan = () => {
+    // セッションストレージにAIからのデートプラン情報を保存する
+    sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
+
+    // 画面遷移
+    router.push("/detail");
+  }
+
   return (
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
@@ -129,7 +142,10 @@ export default function Chat() {
                     {isLoaded ? suggestMessage?.description : (<p>Loading Description...</p>)}
                   </div>
                   <div className="flex flex-row justify-center my-10">
-                    <button className="bg-red-400 p-3 rounded-full border-black border-2">
+                    <button
+                      onClick={saveDatePlan}
+                      className="bg-red-400 p-3 rounded-full border-black border-2"
+                    >
                       詳細確認ボタン
                     </button>
                   </div>
