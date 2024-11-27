@@ -105,7 +105,7 @@ export default function Chat() {
     sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
 
     // セッションストレージに今までの会話内容を保存する
-    sessionStorage.setItem("chatLog",JSON.stringify(chatLog));
+    sessionStorage.setItem("chatLog", JSON.stringify(chatLog));
 
     // 画面遷移
     router.push("/planDetail");
