@@ -100,9 +100,6 @@ export default function Chat() {
    * 2. セッションストレージに今までの対話内容を保存する
    * 3. 画面遷移を行う
    */
-  // セッションストレージに最新のデートプランを保存する
-  // セッションストレージに今までの対話内容を保存する
-  // 画面遷移を行う
   const saveDatePlan = () => {
     // セッションストレージにAIからのデートプラン情報を保存する
     sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
