@@ -2,10 +2,9 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from openai import OpenAI
 
+import schemas
 from chatgpt import clean_description, question_description, question_name
 from googlemap_api import get_change_data, get_place_all, get_place_data
-from request import MessageRequestBody
-from response import MessageResponseBody
 
 app = FastAPI()
 load_dotenv()
@@ -13,7 +12,7 @@ client = OpenAI()
 
 
 @app.post("/api/datePlan")
-def question(Request: MessageRequestBody):
+def question(Request: schemas.MessageRequestBody):
     """
     取得したデートプラン情報をMessageRequestBodyDataの型にはめ込む関数
     """
@@ -36,8 +35,7 @@ def question(Request: MessageRequestBody):
     # 取得した場所の名前とその場所の緯度経度を合体
     place_all = get_place_all(place_names, place_data)
 
-
-    return MessageResponseBody(
+    return schemas.MessageResponseBody(
         facilitys=place_all,
         description=Clean_description,
     )

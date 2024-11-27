@@ -6,3 +6,6 @@ python-dotenv # .env読み込み用
 black
 isort
 autoflake
+
+# Google Maps API
+googlemaps

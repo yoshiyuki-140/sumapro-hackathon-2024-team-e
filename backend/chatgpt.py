@@ -3,13 +3,13 @@ import re
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from request import MessageRequestBody
+import schemas
 
 load_dotenv()
 client = OpenAI()
 
 
-def question_description(Request: MessageRequestBody):
+def question_description(Request: schemas.MessageRequestBody):
     """
     デートプラン情報を提案するアシスタント機能
     """
@@ -26,7 +26,7 @@ def question_description(Request: MessageRequestBody):
     return Description_response.choices[0].message.content
 
 
-def question_name(Request: MessageRequestBody):
+def question_name(Request: schemas.MessageRequestBody):
     """
     デートの中で訪れる場所の名前だけを取得する機能
     """
