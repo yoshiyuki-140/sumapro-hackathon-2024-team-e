@@ -60,7 +60,7 @@ const Detail: React.FC = () => {
         </div>
 
         {/* 戻るボタンとか配置する場所 */}
-        <div className="h-1/6 md p-4 flex items-center justify-center bg-red-100">
+        <div className="h-1/6 md p-4 flex items-center justify-around bg-red-100">
           {/* ボタンを押すとチャット画面にリダイレクトする */}
           <button
             onClick={() => { router.push("/chat") }}
