@@ -100,7 +100,7 @@ export default function Chat() {
     sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
 
     // 画面遷移
-    router.push("/detail");
+    router.push("/planDetail");
   }
 
   return (
