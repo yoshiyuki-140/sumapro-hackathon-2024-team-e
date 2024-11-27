@@ -222,9 +222,10 @@ export default function Chat() {
                     <div className="flex flex-row justify-center my-10">
                       <button
                         onClick={saveDatePlan}
-                        className="bg-red-400 p-3 rounded-full border-black border-2"
+                        className="bg-red-400 p-5 rounded-2xl border-black border-2 text-6xl"
                       >
-                        詳細確認ボタン
+                        {/* 詳細ページへのリンクを表すSVGアイコン */}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 12c2.5 0 4.5 2 4.5 4.5c0 .88-.25 1.71-.69 2.4l3.08 3.1L21 23.39l-3.12-3.07c-.69.43-1.51.68-2.38.68c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5m0 2a2.5 2.5 0 0 0-2.5 2.5a2.5 2.5 0 0 0 2.5 2.5a2.5 2.5 0 0 0 2.5-2.5a2.5 2.5 0 0 0-2.5-2.5M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h1v7l2.5-1.5L12 9V2h6a2 2 0 0 1 2 2v7.81A6.48 6.48 0 0 0 15.5 10A6.5 6.5 0 0 0 9 16.5c0 2.31 1.21 4.35 3.03 5.5z" /></svg>
                       </button>
                     </div>
                   </div>
