@@ -214,7 +214,7 @@ export default function Chat() {
                     <div>
                       {/* デートプランの説明 */}
                       {isLoaded ? (
-                        suggestMessage.description
+                        suggestMessage?.description
                       ) : (
                         <p>Loading Description...</p>
                       )}
