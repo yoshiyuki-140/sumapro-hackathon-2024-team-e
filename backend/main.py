@@ -35,7 +35,7 @@ def question(Request: schemas.MessageRequestBody):
     # 取得した場所の名前とその場所の緯度経度を合体
     place_all = get_place_all(place_names, place_data)
 
-    return schemas.MessageResponseBody(
+    return schemas.DatePlanSuggestion(
         facilitys=place_all,
         description=Clean_description,
     )

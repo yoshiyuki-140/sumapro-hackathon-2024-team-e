@@ -19,7 +19,7 @@ class Facilitys(BaseModel):
 
 
 class MessageRequestBody(BaseModel):
-    """ChatGPTからの提案内容を格納するスキーマ
+    """メッセージを格納する
 
     Args:
         BaseModel (_type_): _description_
@@ -31,8 +31,8 @@ class MessageRequestBody(BaseModel):
     description: str
 
 
-class MessageResponseBody(BaseModel):
-    """デートプランを格納する
+class CurrentDatePlan(BaseModel):
+    """デートプランを格納するスキーマ
 
     Args:
         BaseModel (_type_): _description_
