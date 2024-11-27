@@ -220,6 +220,7 @@ export default function Chat() {
                       )}
                     </div>
                     <div className="flex flex-row justify-center my-10">
+                      {/* デートプラン詳細ページへのリダイレクトを行うボタン */}
                       <button
                         onClick={saveDatePlan}
                         className="bg-red-400 p-5 rounded-2xl border-black border-2 text-6xl"
