@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Messages, SuggestMessage, Message } from "@/types/api";
+import { ChatLog, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +11,7 @@ export default function Chat() {
   const router = useRouter();
 
   // ユーザーからのメッセージを格納する変数
-  const [chatMessages, setMessages] = useState<Messages>([]);
+  const [chatLog, saveChatLog] = useState<ChatLog>([]);
 
   // メッセージ送信フォームの入力内容を一時的に格納する変数
   const [input, setInput] = useState("");
@@ -23,7 +23,7 @@ export default function Chat() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   // リクエストボディーを送信する関数を定義
-  const sendMessages = async () => {
+  const sendChatLog = async () => {
     // inputの中身を読み取り
     const trimmedInput = input.trim();
     if (!trimmedInput) return;
@@ -36,8 +36,8 @@ export default function Chat() {
     };
 
     // userメッセージを保存
-    const updatedMessages = [...chatMessages, userMessage]
-    setMessages(updatedMessages);
+    const updatedChatLog = [...chatLog, userMessage]
+    saveChatLog(updatedChatLog);
 
     // input変数の中身を空文字列で初期化
     setInput("");
@@ -51,7 +51,7 @@ export default function Chat() {
       const response = await fetch("http://localhost:8000/api/datePlan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedMessages),
+        body: JSON.stringify(updatedChatLog),
       });
 
       if (!response.ok) {
@@ -68,7 +68,7 @@ export default function Chat() {
 
 
       // AIからのデートプラン提案内容を保存
-      setMessages((prev) => [
+      saveChatLog((prev) => [
         ...prev,
         {
           role: "system",
@@ -105,7 +105,7 @@ export default function Chat() {
     sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
 
     // セッションストレージに今までの会話内容を保存する
-    sessionStorage.setItem("chatLog",JSON.stringify(chatMessages));
+    sessionStorage.setItem("chatLog",JSON.stringify(chatLog));
 
     // 画面遷移
     router.push("/planDetail");
@@ -115,7 +115,7 @@ export default function Chat() {
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
       <div className="flex-grow overflow-y-auto bg-white p-4 rounded shadow">
-        {chatMessages?.map((msg, index) => (
+        {chatLog?.map((msg, index) => (
           <div key={index} className="mb-4">
             {msg.role === "system" ? (
               // roleがsystemの場合（左寄せ）
@@ -178,12 +178,12 @@ export default function Chat() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessages()}
+            onKeyDown={(e) => e.key === "Enter" && sendChatLog()}
             className="flex-grow p-2 border rounded-l shadow-sm text-black focus:outline-none"
             placeholder="メッセージを入力"
           />
           <button
-            onClick={sendMessages}
+            onClick={sendChatLog}
             className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
           >
             {/* 矢印アイコン */}
