@@ -22,6 +22,44 @@ export default function Chat() {
   // デートスポットが読み込まれたか否かという情報を格納するフラグ変数
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // チャットログがロードされたか否かを保存するフラグ
+  const [isChatLogLoaded, setIsChatLogLoaded] = useState(false);
+
+
+  // セッションストレージからチャットログを取り出す
+  useEffect(() => {
+    try {
+      // セッションストレージからチャットログを取り出す
+      const storedChatLog = sessionStorage.getItem("chatLog");
+
+      if (storedChatLog) {
+        // パースされたチャットログをChatLog型の変数として格納
+        const parsedChatLog = JSON.parse(storedChatLog) as ChatLog;
+        // 結果をchatLog変数に保存する
+        saveChatLog(parsedChatLog);
+        // isLoaded -> true
+        setIsLoaded(true);
+        // 前回の会話の最終的な提案内容をsuggestMessage変数にセットする
+        setSuggestMessage({ facilitys: parsedChatLog[parsedChatLog.length - 1].facilitys, description: parsedChatLog[parsedChatLog.length - 1].description })
+      } else {
+        // 会話履歴がなければ、新規の会話なので、フローを止めずに一応コンソールログに警告だけ出しておく
+        console.warn("会話履歴はありません。");
+        // 新規会話開始の場合はチャットログをクリア
+        saveChatLog([]);
+        // 新規会話開始の場合はセッションストレージの会話内容をクリア
+        sessionStorage.removeItem("chatLog");
+      }
+    } catch (error) {
+      console.error("セッションストレージのデータ解析中にエラーが発生しました。", error);
+      // エラー時もチャットログをクリア
+      saveChatLog([]);
+      sessionStorage.removeItem("chatLog");
+    } finally {
+      // チャットログをロードしたというフラグを立てる
+      setIsChatLogLoaded(true);
+    }
+  }, []);
+
   // リクエストボディーを送信する関数を定義
   const sendChatLog = async () => {
     // inputの中身を読み取り
@@ -115,7 +153,10 @@ export default function Chat() {
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
       <div className="flex-grow overflow-y-auto bg-white p-4 rounded shadow">
-        {chatLog?.map((msg, index) => (
+        {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
+        {!isChatLogLoaded ? (
+          <p className="text-gray-500">Loading chat history...</p>
+        ) : (chatLog?.map((msg, index) => (
           <div key={index} className="mb-4">
             {msg.role === "system" ? (
               // roleがsystemの場合（左寄せ）
@@ -168,7 +209,7 @@ export default function Chat() {
               </div>
             )}
           </div>
-        ))}
+        )))}
       </div>
 
       {/* 入力フォーム */}
