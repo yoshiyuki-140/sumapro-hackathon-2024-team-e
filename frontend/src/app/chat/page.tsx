@@ -187,21 +187,21 @@ export default function Chat() {
                       {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
                       {suggestMessage && isLoaded ? (
                         <CustomizedGoogleMap
+                          // 万一緯度経度が読み込めなかったら、DMM金沢事業所がDefaultCenterとして表示される
                           center={{
                             name: suggestMessage.facilitys[0]?.name || "Default Center",
                             latitude:
-                              suggestMessage.facilitys[0]?.latitude || 36.5287888480469,
+                              suggestMessage.facilitys[0]?.latitude || 36.59438316927364,
                             longitude:
-                              suggestMessage.facilitys[0]?.longitude || 136.62829796528777,
+                              suggestMessage.facilitys[0]?.longitude || 136.68282470468046,
                           }}
                           facilities={suggestMessage.facilitys}
                         />
                       ) : (
-                        <p>Loading map...</p> // ローディング中の表示
+                        <p>Loading map...</p> // ローディングメッセージの表示
                       )}
                     </div>
                     <span>
-                      {/* Mapにピンを配置 */}
                       {msg.facilitys?.map((facility, idx) => (
                         <div
                           key={idx}

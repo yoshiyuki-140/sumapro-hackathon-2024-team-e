@@ -46,13 +46,13 @@ const Detail: React.FC = () => {
     <div className="flex h-screen">
       {/* 左側: デートプランの詳細情報 */}
       <div className="w-1/2 h-screen flex flex-col">
-        <div className="h-5/6 bg-gray-100 p-6 overflow-y-scroll">
+        <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll">
 
           {/* 地点情報カード */}
           {facilities.map((item, index) => (
             <div
               key={index}
-              className="bg-white shadow-md rounded-md p-4 mb-4"
+              className="bg-red-300 rounded-md p-4 mb-4"
             >
               <h2 className="text-xl font-semibold text-black">{item.name}</h2>
             </div>
@@ -60,13 +60,21 @@ const Detail: React.FC = () => {
         </div>
 
         {/* 戻るボタンとか配置する場所 */}
-        <div className="h-1/6 md p-4 flex justify-center bg-gray-100">
+        <div className="h-1/6 md p-4 flex items-center justify-center bg-red-100">
           {/* ボタンを押すとチャット画面にリダイレクトする */}
           <button
             onClick={() => { router.push("/chat") }}
-            className="bg-red-400 p-3 rounded-full border-black border-2 w-36 h-14 text-black font-bold"
+            className="bg-red-400 p-3 rounded-md border-black border-2 w-20 h-14 text-black text-2xl"
           >
-            戻る
+            {/* リターン記号のUnicode */}
+            &#x21A9;
+          </button>
+          {/* デートプランをPDFでダウンロードするボタン */}
+          <button
+            className="bg-red-400 p-3 rounded-md border-black border-2 w-20 h-14 text-black text-2xl flex justify-center items-center"
+          >
+            {/* ダウンロードアイコン */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.92 12.08L12 20l-7.92-7.92l1.42-1.41l5.5 5.5V2h2v14.17l5.5-5.51zM12 20H2v2h20v-2z" /></svg>
           </button>
         </div>
       </div>
