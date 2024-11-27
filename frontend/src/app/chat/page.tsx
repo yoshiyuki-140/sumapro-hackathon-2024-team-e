@@ -5,19 +5,20 @@ import { ChatLog, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 import { useRouter } from "next/navigation";
 
-
 export default function Chat() {
   // リダイレクトを実現するためにuseRouterを使う
   const router = useRouter();
 
   // ユーザーからのメッセージを格納する変数
-  const [chatLog, saveChatLog] = useState<ChatLog>([]);
+  const [chatLog, setChatLog] = useState<ChatLog>([]);
 
   // メッセージ送信フォームの入力内容を一時的に格納する変数
   const [input, setInput] = useState("");
 
   // AIからのメッセージを格納する変数
-  const [suggestMessage, setSuggestMessage] = useState<SuggestMessage | null>(null);
+  const [suggestMessage, setSuggestMessage] = useState<SuggestMessage | null>(
+    null
+  );
 
   // デートスポットが読み込まれたか否かという情報を格納するフラグ変数
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,9 +26,8 @@ export default function Chat() {
   // チャットログがロードされたか否かを保存するフラグ
   const [isChatLogLoaded, setIsChatLogLoaded] = useState(false);
 
-
-  // セッションストレージからチャットログを取り出す
-  useEffect(() => {
+  // セッションストレージからチャットログを取り出す関数
+  const loadChatLogFromSessionStorage = () => {
     try {
       // セッションストレージからチャットログを取り出す
       const storedChatLog = sessionStorage.getItem("chatLog");
@@ -36,28 +36,45 @@ export default function Chat() {
         // パースされたチャットログをChatLog型の変数として格納
         const parsedChatLog = JSON.parse(storedChatLog) as ChatLog;
         // 結果をchatLog変数に保存する
-        saveChatLog(parsedChatLog);
+        setChatLog(parsedChatLog);
         // isLoaded -> true
         setIsLoaded(true);
         // 前回の会話の最終的な提案内容をsuggestMessage変数にセットする
-        setSuggestMessage({ facilitys: parsedChatLog[parsedChatLog.length - 1].facilitys, description: parsedChatLog[parsedChatLog.length - 1].description })
+        const lastMessage = parsedChatLog[parsedChatLog.length - 1];
+        setSuggestMessage({
+          facilitys: lastMessage.facilitys,
+          description: lastMessage.description,
+        });
       } else {
         // 会話履歴がなければ、新規の会話なので、フローを止めずに一応コンソールログに警告だけ出しておく
         console.warn("会話履歴はありません。");
         // 新規会話開始の場合はチャットログをクリア
-        saveChatLog([]);
+        setChatLog([]);
         // 新規会話開始の場合はセッションストレージの会話内容をクリア
         sessionStorage.removeItem("chatLog");
       }
     } catch (error) {
-      console.error("セッションストレージのデータ解析中にエラーが発生しました。", error);
+      console.error(
+        "セッションストレージのデータ解析中にエラーが発生しました。",
+        error
+      );
       // エラー時もチャットログをクリア
-      saveChatLog([]);
+      setChatLog([]);
       sessionStorage.removeItem("chatLog");
     } finally {
       // チャットログをロードしたというフラグを立てる
       setIsChatLogLoaded(true);
     }
+  };
+
+  // セッションストレージにチャットログを保存する関数
+  const saveChatLogToSessionStorage = (log: ChatLog) => {
+    sessionStorage.setItem("chatLog", JSON.stringify(log));
+  };
+
+  // セッションストレージからチャットログを取り出す
+  useEffect(() => {
+    loadChatLogFromSessionStorage();
   }, []);
 
   // リクエストボディーを送信する関数を定義
@@ -74,8 +91,10 @@ export default function Chat() {
     };
 
     // userメッセージを保存
-    const updatedChatLog = [...chatLog, userMessage]
-    saveChatLog(updatedChatLog);
+    const updatedChatLog = [...chatLog, userMessage];
+    setChatLog(updatedChatLog);
+    // チャットログをセッションストレージに保存
+    saveChatLogToSessionStorage(updatedChatLog);
 
     // input変数の中身を空文字列で初期化
     setInput("");
@@ -93,7 +112,7 @@ export default function Chat() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status code : ${response.status}`)
+        throw new Error(`HTTP error! status code : ${response.status}`);
       }
 
       const suggest: SuggestMessage = await response.json();
@@ -101,21 +120,24 @@ export default function Chat() {
       // サーバーメッセージを状態として保存
       setSuggestMessage(suggest);
 
-      console.log("This is facilitys : " + suggestMessage?.facilitys);
-      console.log("This is description : " + suggestMessage?.description);
-
+      console.log("This is facilitys :", suggest.facilitys);
+      console.log("This is description :", suggest.description);
 
       // AIからのデートプラン提案内容を保存
-      saveChatLog((prev) => [
-        ...prev,
-        {
-          role: "system",
-          message: "",
-          facilitys: suggest.facilitys,
-          description: suggest.description,
-        },
-      ]);
-
+      setChatLog((prev) => {
+        const newChatLog = [
+          ...prev,
+          {
+            role: "system",
+            message: "",
+            facilitys: suggest.facilitys,
+            description: suggest.description,
+          },
+        ];
+        // チャットログをセッションストレージに保存
+        saveChatLogToSessionStorage(newChatLog);
+        return newChatLog;
+      });
     } catch (error) {
       console.error("Failed to fetch response:", error);
     }
@@ -123,14 +145,11 @@ export default function Chat() {
 
   // suggestMessageの更新を監視し`isLoaded`を更新
   // これがないと、デートスポットの情報がロードされないままGoogleMapAPIを呼び出してしまって、描写が失敗する
-  useEffect(
-    () => {
-      if (suggestMessage != undefined) {
-        setIsLoaded(true);
-      }
-    },
-    [suggestMessage]
-  );
+  useEffect(() => {
+    if (suggestMessage != null) {
+      setIsLoaded(true);
+    }
+  }, [suggestMessage]);
 
   /**
    * セッションストレージにチャット画面の情報を保存する関数
@@ -143,11 +162,11 @@ export default function Chat() {
     sessionStorage.setItem("datePlan", JSON.stringify(suggestMessage));
 
     // セッションストレージに今までの会話内容を保存する
-    sessionStorage.setItem("chatLog", JSON.stringify(chatLog));
+    saveChatLogToSessionStorage(chatLog);
 
     // 画面遷移
     router.push("/planDetail");
-  }
+  };
 
   return (
     <div className="flex flex-col h-screen p-4 bg-red-50">
@@ -156,60 +175,71 @@ export default function Chat() {
         {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
         {!isChatLogLoaded ? (
           <p className="text-gray-500">Loading chat history...</p>
-        ) : (chatLog?.map((msg, index) => (
-          <div key={index} className="mb-4">
-            {msg.role === "system" ? (
-              // roleがsystemの場合（左寄せ）
-              <div className="flex flex-row">
-                <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
-                  <div>
-                    {/* GoogleMapを表示 */}
-                    {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
-                    {suggestMessage && isLoaded ? (
-                      <CustomizedGoogleMap
-                        center={{
-                          name: suggestMessage.facilitys[0]?.name || "Default Center",
-                          latitude: suggestMessage.facilitys[0]?.latitude || 36.5287888480469,
-                          longitude: suggestMessage.facilitys[0]?.longitude || 136.62829796528777,
-                        }}
-                        facilities={suggestMessage?.facilitys}
-                      />
-                    ) : (
-                      <p>Loading map...</p> // ローディング中の表示
-                    )}
-                  </div>
-                  <span>
-                    {/* Mapにピンを配置 */}
-                    {msg.facilitys?.map((facility, index) => (
-                      <div key={index} className="item bg-red-300 my-3 mx-0 p-3 rounded-lg">
-                        {facility.name}
-                      </div>
-                    ))}
-                  </span>
-                  <div>
-                    {/* デートプランの説明 */}
-                    {isLoaded ? suggestMessage?.description : (<p>Loading Description...</p>)}
-                  </div>
-                  <div className="flex flex-row justify-center my-10">
-                    <button
-                      onClick={saveDatePlan}
-                      className="bg-red-400 p-3 rounded-full border-black border-2"
-                    >
-                      詳細確認ボタン
-                    </button>
+        ) : (
+          chatLog.map((msg, index) => (
+            <div key={index} className="mb-4">
+              {msg.role === "system" ? (
+                // roleがsystemの場合（左寄せ）
+                <div className="flex flex-row">
+                  <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
+                    <div>
+                      {/* GoogleMapを表示 */}
+                      {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
+                      {suggestMessage && isLoaded ? (
+                        <CustomizedGoogleMap
+                          center={{
+                            name: suggestMessage.facilitys[0]?.name || "Default Center",
+                            latitude:
+                              suggestMessage.facilitys[0]?.latitude || 36.5287888480469,
+                            longitude:
+                              suggestMessage.facilitys[0]?.longitude || 136.62829796528777,
+                          }}
+                          facilities={suggestMessage.facilitys}
+                        />
+                      ) : (
+                        <p>Loading map...</p> // ローディング中の表示
+                      )}
+                    </div>
+                    <span>
+                      {/* Mapにピンを配置 */}
+                      {msg.facilitys?.map((facility, idx) => (
+                        <div
+                          key={idx}
+                          className="item bg-red-300 my-3 mx-0 p-3 rounded-lg"
+                        >
+                          {facility.name}
+                        </div>
+                      ))}
+                    </span>
+                    <div>
+                      {/* デートプランの説明 */}
+                      {isLoaded ? (
+                        suggestMessage.description
+                      ) : (
+                        <p>Loading Description...</p>
+                      )}
+                    </div>
+                    <div className="flex flex-row justify-center my-10">
+                      <button
+                        onClick={saveDatePlan}
+                        className="bg-red-400 p-3 rounded-full border-black border-2"
+                      >
+                        詳細確認ボタン
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              // roleがuserの場合（右寄せ）
-              <div className="flex flex-row-reverse w-full">
-                <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
-                  <span>{msg.message}</span>
+              ) : (
+                // roleがuserの場合（右寄せ）
+                <div className="flex flex-row-reverse w-full">
+                  <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
+                    <span>{msg.message}</span>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )))}
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       {/* 入力フォーム */}
@@ -228,8 +258,18 @@ export default function Chat() {
             className="px-4 py-2 bg-red-400 text-white rounded-r shadow hover:bg-blue-600"
           >
             {/* 矢印アイコン */}
-            <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+              />
             </svg>
           </button>
         </div>
