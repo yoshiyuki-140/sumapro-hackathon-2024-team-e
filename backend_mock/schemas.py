@@ -31,3 +31,20 @@ class datePlanResponseBody(BaseModel):
 
     facilitys: List[Facility]
     description: str
+
+
+class apiDatePlanRestAreaRequestBody(Facility):
+    """
+    施設の情報を返却する
+    中身はFacilityクラスと同じなので、継承で済ませる
+    """
+
+
+class apiDatePlanRestAreaResponseBody(BaseModel):
+    """
+    カフェ・トイレ・コンビニの情報を返却する
+    """
+
+    cafe: Facility
+    toilet: Facility
+    convenienceStore: Facility
