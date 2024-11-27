@@ -1,7 +1,6 @@
 from typing import List
-from time import sleep
 
-from fastapi import FastAPI, Body
+from fastapi import Body, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 import schemas
