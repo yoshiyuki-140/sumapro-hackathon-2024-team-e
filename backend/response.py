@@ -1,7 +1,6 @@
 from typing import List
 
 from pydantic import BaseModel
-
 from request import Facilitys
 
 
@@ -10,4 +9,7 @@ class MessageResponseBody(BaseModel):
     description: str
 
 
-
+class PlanResponseBody(BaseModel):
+    cafe: Facilitys
+    toilet: Facilitys
+    convenienceStore: Facilitys

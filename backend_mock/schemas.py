@@ -31,4 +31,3 @@ class datePlanResponseBody(BaseModel):
 
     facilitys: List[Facility]
     description: str
-
