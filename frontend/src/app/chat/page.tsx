@@ -120,8 +120,6 @@ export default function Chat() {
       // サーバーメッセージを状態として保存
       setSuggestMessage(suggest);
 
-      console.log("This is facilitys :", suggest.facilitys);
-      console.log("This is description :", suggest.description);
 
       // AIからのデートプラン提案内容を保存
       setChatLog((prev) => {
