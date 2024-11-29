@@ -1,5 +1,7 @@
 'use client'
-import CustomizedGoogleMap from "@/components/CustomizedGoogleMap"; import { Facility, SuggestMessage, RestArea } from "@/types/api";
+import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
+import DropdownMenu from "@/components/DropDownMenu";
+import { Facility, SuggestMessage, RestArea } from "@/types/api";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -86,16 +88,10 @@ export default function Detail() {
     <div className="flex h-screen">
       {/* 左側: デートプランの詳細情報 */}
       <div className="w-1/2 h-screen flex flex-col">
-        <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll">
-
+        <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll flex flex-col">
           {/* 地点情報カード */}
           {facilities.map((item, index) => (
-            <div
-              key={index}
-              className="bg-red-300 rounded-md p-4 mb-4"
-            >
-              <h2 className="text-xl font-semibold text-black">{item.name}</h2>
-            </div>
+            <DropdownMenu menuTitle={item.name} restArea={restAreas[index]} key={index} />
           ))}
         </div>
 

@@ -1,7 +1,7 @@
-import { Facility } from "@/types/api";
+import { RestArea } from "@/types/api";
 import { useState } from "react";
 
-const DropdownMenu = (menuTitle: string, facilities: Facility[]) => {
+export default function DropdownMenu({ menuTitle, restArea }: { menuTitle: string; restArea: RestArea }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -9,11 +9,11 @@ const DropdownMenu = (menuTitle: string, facilities: Facility[]) => {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="w-full flex flex-col">
       {/* メニューボタン */}
       <button
         onClick={toggleMenu}
-        className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className={`w-full bg-red-300 text-black py-4 px-5 text-left font-bold rounded-t-2xl mt-2 ${!isOpen ? "rounded-2xl" : ""}`}
       >
         {menuTitle}
       </button>
@@ -21,23 +21,31 @@ const DropdownMenu = (menuTitle: string, facilities: Facility[]) => {
       {/* メニュー */}
       {isOpen && (
         <div
-          className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-white border border-gray-300 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
+          className="bg-green-100 p-2 text-black rounded-b-md"
         >
-          <div className="py-1" role="none">
-            {facilities.map((items, index) => (
-              <button
-                key={index}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                {items.name}
-              </button>
-            ))}
-          </div>
+          <ul>
+            <li
+              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              role="menuitem"
+            >
+              {restArea.cafe?.name || "カフェ情報なし"}
+            </li>
+            <li
+              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              role="menuitem"
+            >
+              {restArea.convenienceStore?.name || "コンビニ情報なし"}
+            </li>
+            <li
+              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              role="menuitem"
+            >
+              {restArea.toilet?.name || "トイレ情報なし"}
+            </li>
+          </ul>
         </div>
       )}
     </div>
   );
-};
-
-export default DropdownMenu;
+}
