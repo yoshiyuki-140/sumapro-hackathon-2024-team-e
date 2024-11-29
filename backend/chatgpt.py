@@ -1,9 +1,9 @@
 import re
+from typing import List
 
 from dotenv import load_dotenv
 from openai import OpenAI
 from request import MessageRequestBody
-from typing import List
 
 load_dotenv()
 client = OpenAI()
@@ -16,18 +16,19 @@ def question_description(Requests: List[MessageRequestBody]):
 
     # 今までの会話履歴を取り出す
     messages = [
-        {"role": request.role, "content": request.message}
-        for request in Requests
+        {"role": request.role, "content": request.message} for request in Requests
     ]
 
     # messagesの先頭に役割を定義する
-    messages.insert(0, {
-                    "role": "system",
-                    "content": "デートプラン情報を提案するアシスタントです。",
-            })
+    messages.insert(
+        0,
+        {
+            "role": "system",
+            "content": "デートプラン情報を提案するアシスタントです。",
+        },
+    )
     Description_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages
+        model="gpt-4o-mini", messages=messages
     )
 
     Description_content = Description_response.choices[0].message.content

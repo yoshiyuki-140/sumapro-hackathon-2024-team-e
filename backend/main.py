@@ -1,3 +1,5 @@
+from typing import List
+
 from chatgpt import clean_description, question_description, question_name
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -7,7 +9,6 @@ from googlemap_api import (get_cafe_restArea, get_change_data,
 from openai import OpenAI
 from request import MessageRequestBody, PlanRequestBody
 from response import MessageResponseBody, PlanResponseBody
-from typing import List
 
 app = FastAPI()
 load_dotenv()
@@ -49,7 +50,7 @@ def post_restArea(request: PlanRequestBody):
     """
     デートの中で訪れる場所周辺の休憩スポットを返却する
     """
-    
+
     # デートの中で訪れる場所周辺のカフェ情報を取得
     place_restArea_cafe = get_cafe_restArea(request)
 
