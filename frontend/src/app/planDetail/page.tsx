@@ -76,7 +76,6 @@ export default function Detail() {
 
   useEffect(() => {
     getRestArea();
-    console.log("Hello");
   }, [getRestArea]);
 
 
