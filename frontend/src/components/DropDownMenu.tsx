@@ -13,7 +13,7 @@ export default function DropdownMenu({ menuTitle, restArea }: { menuTitle: strin
       {/* メニューボタン */}
       <button
         onClick={toggleMenu}
-        className={`w-full bg-red-300 text-black py-4 px-5 text-left font-bold rounded-t-2xl mt-2 ${!isOpen ? "rounded-2xl" : ""}`}
+        className={`w-full bg-red-300 text-black text-2xl py-5 px-6 text-left rounded-t-2xl mt-2 ${!isOpen ? "rounded-2xl" : ""}`}
       >
         {menuTitle}
       </button>
@@ -22,23 +22,23 @@ export default function DropdownMenu({ menuTitle, restArea }: { menuTitle: strin
       {isOpen && (
         <div
           role="menu"
-          className="bg-green-100 p-2 text-black rounded-b-md"
+          className="bg-green-100 p-2 text-black rounded-b-2xl"
         >
           <ul>
             <li
-              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
             >
               {restArea.cafe?.name || "カフェ情報なし"}
             </li>
             <li
-              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
             >
               {restArea.convenienceStore?.name || "コンビニ情報なし"}
             </li>
             <li
-              className="m-2 bg-green-200 px-3 py-2 rounded-md font-bold text-gray-600"
+              className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
             >
               {restArea.toilet?.name || "トイレ情報なし"}
