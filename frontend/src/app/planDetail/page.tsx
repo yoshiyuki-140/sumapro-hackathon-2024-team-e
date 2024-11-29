@@ -1,6 +1,5 @@
 'use client'
-import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
-import { Facility, SuggestMessage, RestArea } from "@/types/api";
+import CustomizedGoogleMap from "@/components/CustomizedGoogleMap"; import { Facility, SuggestMessage, RestArea } from "@/types/api";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -8,7 +7,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 
 // デートプラン詳細ページの関数コンポーネント
-const Detail: React.FC = () => {
+export default function Detail() {
   // リダイレクトを実現するためにuseRouterを使う
   const router = useRouter();
 
@@ -48,7 +47,7 @@ const Detail: React.FC = () => {
 
 
   // 拠点情報から各々の近くの休憩所を検索する。APIの呼び出し
-  const getRestArea = async () => {
+  const getRestArea = useCallback(async () => {
     // APIエントリポイントにリクエスト
     for (const facility of facilities) {
       try {
@@ -63,13 +62,15 @@ const Detail: React.FC = () => {
         }
 
         const restArea: RestArea = await response.json();
+        console.log("休憩場所", restArea);
 
         // レスポンスボディーを保存
-        setRestAreas([...restAreas, restArea]);
+        setRestAreas((prev) => [...prev, restArea]);
       } catch (error) {
         console.error("Failed to fetch response:", error);
       }
-    };
+    }
+  }, [facilities]);
 
   // Todo : 
   //　画面リロード時に休憩場所を呼び出さないといけない
@@ -77,6 +78,7 @@ const Detail: React.FC = () => {
   // 新しいデータ構造作らないといけないかも
   useEffect(() => {
     getRestArea();
+    console.log("Hello");
   }, [getRestArea]);
 
 
@@ -123,6 +125,4 @@ const Detail: React.FC = () => {
       </div>
     </div>
   )
-}
-
-export default Detail;
+};
