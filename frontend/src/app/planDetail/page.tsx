@@ -100,14 +100,14 @@ export default function Detail() {
           {/* ボタンを押すとチャット画面にリダイレクトする */}
           <button
             onClick={() => { router.push("/chat") }}
-            className="bg-red-400 p-3 rounded-md border-black border-2 w-20 h-14 text-black text-2xl"
+            className="bg-red-400 p-3 rounded-xl border-black border-2 w-20 h-14 text-black text-2xl"
           >
             {/* リターン記号のUnicode */}
             &#x21A9;
           </button>
           {/* デートプランをPDFでダウンロードするボタン */}
           <button
-            className="bg-red-400 p-3 rounded-md border-black border-2 w-20 h-14 text-black text-2xl flex justify-center items-center"
+            className="bg-red-400 p-3 rounded-xl border-black border-2 w-20 h-14 text-black text-2xl flex justify-center items-center"
           >
             {/* ダウンロードアイコン */}
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.92 12.08L12 20l-7.92-7.92l1.42-1.41l5.5 5.5V2h2v14.17l5.5-5.51zM12 20H2v2h20v-2z" /></svg>
