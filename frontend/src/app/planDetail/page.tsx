@@ -1,15 +1,21 @@
 'use client'
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
-import { Facility, SuggestMessage } from "@/types/api";
+import { Facility, SuggestMessage, RestArea } from "@/types/api";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
+
+
 
 // デートプラン詳細ページの関数コンポーネント
 const Detail: React.FC = () => {
   // リダイレクトを実現するためにuseRouterを使う
   const router = useRouter();
 
-  // セッションストレージからデータ読み出し
+  // 各拠点の近くの休憩場所(トイレ・コンビニ・カフェ)を保存する変数
+  const [restAreas, setRestAreas] = useState<RestArea[]>([]);
+
+  // セッションストレージから読み出したデートの行き先情報を格納する変数
   const [suggestDatePlan, setSuggestDatePlan] = useState<SuggestMessage | null>(null);
 
   useEffect(() => {
@@ -40,6 +46,38 @@ const Detail: React.FC = () => {
     longitude: facilities[0]?.longitude,
   };
 
+
+  // 拠点情報から各々の近くの休憩所を検索する。APIの呼び出し
+  const getRestArea = async () => {
+    // APIエントリポイントにリクエスト
+    for (const facility of facilities) {
+      try {
+        const response = await fetch("http://localhost:8000/api/datePlan/restArea", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(facility),
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status code : ${response.status}`);
+        }
+
+        const restArea: RestArea = await response.json();
+
+        // レスポンスボディーを保存
+        setRestAreas([...restAreas, restArea]);
+      } catch (error) {
+        console.error("Failed to fetch response:", error);
+      }
+    };
+
+  // Todo : 
+  //　画面リロード時に休憩場所を呼び出さないといけない
+  // 問題点facilitysには順序がない
+  // 新しいデータ構造作らないといけないかも
+  useEffect(() => {
+    getRestArea();
+  }, [getRestArea]);
 
 
   return (

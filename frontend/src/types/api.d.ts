@@ -29,3 +29,10 @@ export type SuggestMessage = {
   facilitys: Facility[];
   description: string;
 };
+
+// 休憩場所の格納先
+export type RestArea = {
+  cafe: Facility;
+  toilet: Facility;
+  convenienceStore: Facility;
+};
