@@ -169,7 +169,7 @@ export default function Chat() {
   return (
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
-      <div className="flex-grow overflow-y-auto bg-white p-4 rounded shadow">
+      <div className="flex-grow overflow-y-auto bg-white p-4 rounded-lg shadow">
         {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
         {!isChatLogLoaded ? (
           <p className="text-gray-500">Loading chat history...</p>
@@ -179,7 +179,7 @@ export default function Chat() {
               {msg.role === "system" ? (
                 // roleがsystemの場合（左寄せ）
                 <div className="flex flex-row">
-                  <div className="inline-block px-4 py-4 rounded-lg bg-red-100 text-black w-4/5">
+                  <div className="inline-block px-4 py-4 rounded-2xl bg-red-100 text-black w-2/3">
                     <div>
                       {/* GoogleMapを表示 */}
                       {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
@@ -200,17 +200,21 @@ export default function Chat() {
                         <p>Loading map...</p> // ローディングメッセージの表示
                       )}
                     </div>
-                    <span>
+
+                    {/* 訪れる施設一覧 */}
+                    <div className="my-10">
                       {msg.facilitys?.map((facility, idx) => (
                         <div
                           key={idx}
-                          className="item bg-red-300 my-3 mx-0 p-3 rounded-lg"
+                          className="item bg-red-300 my-3 mx-4 px-6 py-5 font-bold text-xl rounded-2xl"
                         >
                           {facility.name}
                         </div>
                       ))}
-                    </span>
-                    <div>
+                    </div>
+                    <div
+                      className="mt-6 mx-5 mb-28"
+                    >
                       {/* デートプランの説明 */}
                       {isLoaded ? (
                         suggestMessage?.description
@@ -232,7 +236,7 @@ export default function Chat() {
                 </div>
               ) : (
                 // roleがuserの場合（右寄せ）
-                <div className="flex flex-row-reverse w-full">
+                <div className="flex flex-row-reverse w-full my-10">
                   <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
                     <span>{msg.message}</span>
                   </div>
