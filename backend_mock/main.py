@@ -61,7 +61,7 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
 
 
 @app.post(
-    "api/datePlan/restArea", response_model=schemas.apiDatePlanRestAreaResponseBody
+    "/api/datePlan/restArea", response_model=schemas.apiDatePlanRestAreaResponseBody
 )
 def post_apiDatePlanRestArea(restAreas: schemas.apiDatePlanRestAreaRequestBody):
     """最寄りのトイレ・カフェ・コンビニの情報を返却する"""
