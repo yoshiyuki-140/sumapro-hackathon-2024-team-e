@@ -91,6 +91,7 @@ export default function Detail() {
         <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll flex flex-col">
           {/* 地点情報カード */}
           {facilities.map((item, index) => (
+            // ドロップダウンメニュー
             <DropdownMenu menuTitle={item.name} restArea={restAreas[index]} key={index} />
           ))}
         </div>
