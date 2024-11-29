@@ -18,25 +18,29 @@ export default function DropdownMenu({ menuTitle, restArea }: { menuTitle: strin
         {menuTitle}
       </button>
 
-      {/* メニュー */}
+      {/* 休憩場所メニュー */}
       {isOpen && (
         <div
           role="menu"
           className="bg-green-100 p-2 text-black rounded-b-2xl"
         >
+          {/* 休憩場所情報 */}
           <ul>
+            {/* カフェ情報 */}
             <li
               className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
             >
               {restArea.cafe?.name || "カフェ情報なし"}
             </li>
+            {/* コンビニ情報 */}
             <li
               className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
             >
               {restArea.convenienceStore?.name || "コンビニ情報なし"}
             </li>
+            {/* トイレ情報 */}
             <li
               className="m-3 bg-green-200 px-5 py-3 rounded-xl font-bold text-black text-lg"
               role="menuitem"
