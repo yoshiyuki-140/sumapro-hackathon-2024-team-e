@@ -74,10 +74,6 @@ export default function Detail() {
     }
   }, [facilities]);
 
-  // Todo : 
-  //　画面リロード時に休憩場所を呼び出さないといけない
-  // 問題点facilitysには順序がない
-  // 新しいデータ構造作らないといけないかも
   useEffect(() => {
     getRestArea();
     console.log("Hello");
