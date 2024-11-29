@@ -3,18 +3,22 @@
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { MapProps } from "@/types/customized.google.map";
 
+interface CustomizedGoogleMapProps extends MapProps {
+    height: string; // 高さを親から受け取る
+}
+
 
 // React.FCのFCはFunctionCompornentの意味
-const CustomizedGoogleMap: React.FC<MapProps> = ({ center, facilities }) => {
+const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facilities, height }) => {
 
     // Map形式
     const containerStyle = {
         width: "100%",
-        height: "100vh",
+        height: height,
     };
 
     // ズームレベル
-    const zoom = 13;
+    const zoom = 15;
 
 
     // APIキー読み出し

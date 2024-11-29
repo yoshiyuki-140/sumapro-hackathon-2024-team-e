@@ -113,7 +113,7 @@ export default function Detail() {
 
       {/* 右側: Google Map */}
       <div className="w-1/2">
-        <CustomizedGoogleMap center={mapCenter} facilities={facilities} />
+        <CustomizedGoogleMap center={mapCenter} facilities={facilities} height="100vh"/>
       </div>
     </div>
   )

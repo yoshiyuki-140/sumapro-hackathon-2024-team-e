@@ -194,6 +194,7 @@ export default function Chat() {
                               suggestMessage.facilitys[0]?.longitude || 136.68282470468046,
                           }}
                           facilities={suggestMessage.facilitys}
+                          height="400px"
                         />
                       ) : (
                         <p>Loading map...</p> // ローディングメッセージの表示
