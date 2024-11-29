@@ -237,7 +237,7 @@ export default function Chat() {
               ) : (
                 // roleがuserの場合（右寄せ）
                 <div className="flex flex-row-reverse w-full my-10">
-                  <div className="inline-block px-4 py-2 rounded-lg bg-red-100 text-black">
+                  <div className="inline-block px-4 py-2 rounded-2xl bg-red-100 text-black w-1/3">
                     <span>{msg.message}</span>
                   </div>
                 </div>
