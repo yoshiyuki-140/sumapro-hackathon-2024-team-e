@@ -33,6 +33,13 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
         console.log(i, element);
     }
 
+    // 緯度経度情報がnullの時のエラーハンドリング
+    for (const facility of facilities) {
+        if ((facility.latitude === null || facility.longitude === null) || (facility.latitude === undefined || facility.longitude)) {
+            console.error("Error : 緯度か経度の情報が定義されていません");
+        }
+    }
+
 
     return (
         <LoadScript googleMapsApiKey={apiKey}>
