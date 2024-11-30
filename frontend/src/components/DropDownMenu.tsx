@@ -1,12 +1,31 @@
 import { RestArea } from "@/types/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function DropdownMenu({ menuTitle, restArea }: { menuTitle: string; restArea: RestArea }) {
+export default function DropdownMenu({
+  cardIndex,
+  menuTitle,
+  restArea,
+  setChangedCardIndex
+}: {
+  cardIndex: number;
+  menuTitle: string,
+  restArea: RestArea,
+  setChangedCardIndex: Function
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  // トグルメニューが開かれたらこのメニューを更新する
+  useEffect(() => {
+    if (isOpen) {
+      setChangedCardIndex(cardIndex);
+    }
+  }, [isOpen]);
+
+  console.log("menuTitle", menuTitle, "restArea", restArea);
 
   return (
     <div className="w-full flex flex-col">

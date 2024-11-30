@@ -16,6 +16,12 @@ export default function Detail() {
   // 各拠点の近くの休憩場所(トイレ・コンビニ・カフェ)を保存する変数
   const [restAreas, setRestAreas] = useState<RestArea[]>([]);
 
+  // デートスポットのカードの開閉状態が変更されたかを管理する変数
+  // const [isChangedDateCardState, setIsChangedDateCardState] = useState<boolean>(false);
+
+  // デートスポットのカードのうち、どのカードが変更されたかを管理する変数
+  const [changedCardIndex, setChangedCardIndex] = useState<number>();
+
   // セッションストレージから読み出したデートの行き先情報を格納する変数
   const [suggestDatePlan, setSuggestDatePlan] = useState<SuggestMessage | null>(null);
 
@@ -74,9 +80,15 @@ export default function Detail() {
     }
   }, [facilities]);
 
+
   useEffect(() => {
     getRestArea();
   }, [getRestArea]);
+
+  // 疑問 : useEffectを複数記述してもよいか?
+  // プロットする休憩場所情報を更新する
+  // これだとどうなる？
+  // 実現したい事柄 : isChangedDateStateCardがtrueになったら.
 
 
   return (
@@ -85,10 +97,19 @@ export default function Detail() {
       <div className="w-1/2 h-screen flex flex-col">
         <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll flex flex-col">
           {/* 地点情報カード */}
-          {facilities.map((item, index) => (
-            // ドロップダウンメニュー
-            <DropdownMenu menuTitle={item.name} restArea={restAreas[index]} key={index} />
-          ))}
+          {facilities.map((item, index) => {
+            console.log(index, item.name);
+            return (
+              // ドロップダウンメニュー
+              <DropdownMenu
+                menuTitle={item.name}
+                restArea={restAreas[index]}
+                key={index}
+                cardIndex={index}
+                setChangedCardIndex={setChangedCardIndex}
+              />
+            )
+          })}
         </div>
 
         {/* 戻るボタンとか配置する場所 */}
@@ -113,7 +134,7 @@ export default function Detail() {
 
       {/* 右側: Google Map */}
       <div className="w-1/2">
-        <CustomizedGoogleMap center={mapCenter} facilities={facilities} height="100vh" />
+        <CustomizedGoogleMap center={mapCenter} facilities={facilities} height="100vh" restAreas={restAreas} changedCardIndex={changedCardIndex} />
       </div>
     </div>
   )

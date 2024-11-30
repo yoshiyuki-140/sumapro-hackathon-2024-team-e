@@ -1,15 +1,22 @@
 'use client';
 
+
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { MapProps } from "@/types/customized.google.map";
+import { RestArea } from "@/types/api";
+import { useEffect } from "react";
+import { local_cafe, local_convenience_store, wc } from 'mdi-paths'
+
 
 interface CustomizedGoogleMapProps extends MapProps {
-    height: string; // 高さを親から受け取る
+    height: string; // GoogleMapの画面上での縦幅
+    restAreas?: RestArea[]; // すべての休憩場所のデータ
+    changedCardIndex?: number; // 変更されたカードのindex情報
 }
 
 
 // React.FCのFCはFunctionCompornentの意味
-const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facilities, height }) => {
+const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facilities, height, restAreas, changedCardIndex }) => {
 
     // Map形式
     const containerStyle = {
@@ -36,9 +43,22 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
     // 緯度経度情報がnullの時の警告表示
     for (const facility of facilities) {
         if ((facility.latitude === null || facility.longitude === null) || (facility.latitude === undefined || facility.longitude === undefined)) {
-            console.warn("Error : 緯度か経度の情報が定義されていません");
+            console.warn("Warning : 緯度か経度の情報が定義されていません");
         }
     }
+
+
+
+    // これでの実装は難しそう
+    useEffect(() => {
+        // restAreaをきちんと受け取ったかをチェックする
+        if (restAreas?.length === 0) {
+            console.warn("休憩場所の情報が取得できませんでした。", restAreas);
+        }
+
+    }, []);
+
+    console.log("更新されました");
 
 
     return (
@@ -56,6 +76,61 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                         label={location.name} // 任意でラベル表示
                     />
                 ))}
+
+                {/* 休憩場所の情報が取得できているのならば */}
+                {/* 休憩場所のマーカーを描写 */}
+                {restAreas && changedCardIndex && (
+                    <div>
+                        {/* カフェのマーカー */}
+                        <Marker
+                            position={{
+                                lat: restAreas[changedCardIndex].cafe.latitude,
+                                lng: restAreas[changedCardIndex].cafe.longitude
+                            }}
+                            // label={restAreas[changedCardIndex].cafe.name}
+                            // カフェアイコン
+                            icon={{
+                                fillColor: '#000000',
+                                fillOpacity: 1,
+                                path: local_cafe,
+                                strokeColor: '#000000',
+                                strokeWeight: 1,
+                            }}
+                        />
+                        {/* コンビニのマーカー */}
+                        <Marker
+                            position={{
+                                lat: restAreas[changedCardIndex].convenienceStore.latitude,
+                                lng: restAreas[changedCardIndex].convenienceStore.longitude
+                            }}
+                            // label={restAreas[changedCardIndex].convenienceStore.name}
+                            // コンビニアイコン
+                            icon={{
+                                fillColor: '#000000',
+                                fillOpacity: 1,
+                                path: local_convenience_store,
+                                strokeColor: '#000000',
+                                strokeWeight: 1,
+                            }}
+                        />
+                        {/* トイレのマーカー */}
+                        <Marker
+                            position={{
+                                lat: restAreas[changedCardIndex].toilet.latitude,
+                                lng: restAreas[changedCardIndex].toilet.longitude
+                            }}
+                            // label={restAreas[changedCardIndex].toilet.name}
+                            // トイレアイコン
+                            icon={{
+                                fillColor: '#000000',
+                                fillOpacity: 1,
+                                path: wc,
+                                strokeColor: '#000000',
+                                strokeWeight: 1,
+                            }}
+                        />
+                    </div>
+                )}
             </GoogleMap>
         </LoadScript>
     );
