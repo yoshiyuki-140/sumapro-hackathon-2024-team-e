@@ -71,7 +71,7 @@
           "result"
         ],
         "summary": "訪れる地点の情報から、近くの休憩所の情報を返却する",
-        "description": "最寄りのトイレ、カフェ、コンビニの情報を返却する",
+        "description": "最寄りのトイレ、カフェ、コンビニの情報を返却する。緯度経度情報が適切ではない場合エラー文を返す",
         "requestBody": {
           "required": true,
           "content": {
