@@ -16,9 +16,6 @@ export default function Detail() {
   // 各拠点の近くの休憩場所(トイレ・コンビニ・カフェ)を保存する変数
   const [restAreas, setRestAreas] = useState<RestArea[]>([]);
 
-  // デートスポットのカードの開閉状態が変更されたかを管理する変数
-  // const [isChangedDateCardState, setIsChangedDateCardState] = useState<boolean>(false);
-
   // デートスポットのカードのうち、どのカードが変更されたかを管理する変数
   const [changedCardIndex, setChangedCardIndex] = useState<number>();
 
@@ -84,11 +81,6 @@ export default function Detail() {
   useEffect(() => {
     getRestArea();
   }, [getRestArea]);
-
-  // 疑問 : useEffectを複数記述してもよいか?
-  // プロットする休憩場所情報を更新する
-  // これだとどうなる？
-  // 実現したい事柄 : isChangedDateStateCardがtrueになったら.
 
 
   return (

@@ -82,7 +82,6 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                                 lat: restAreas[changedCardIndex]?.cafe?.latitude,
                                 lng: restAreas[changedCardIndex]?.cafe?.longitude
                             }}
-                            // label={restAreas[changedCardIndex].cafe.name}
                             // カフェアイコン
                             icon={{
                                 fillColor: '#000000',
@@ -98,7 +97,6 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                                 lat: restAreas[changedCardIndex]?.convenienceStore?.latitude,
                                 lng: restAreas[changedCardIndex]?.convenienceStore?.longitude
                             }}
-                            // label={restAreas[changedCardIndex].convenienceStore.name}
                             // コンビニアイコン
                             icon={{
                                 fillColor: '#000000',
@@ -114,7 +112,6 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                                 lat: restAreas[changedCardIndex]?.toilet?.latitude,
                                 lng: restAreas[changedCardIndex]?.toilet?.longitude
                             }}
-                            // label={restAreas[changedCardIndex].toilet.name}
                             // トイレアイコン
                             icon={{
                                 fillColor: '#000000',
