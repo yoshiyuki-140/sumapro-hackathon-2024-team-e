@@ -173,6 +173,12 @@ export default function Chat() {
         {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
         {!isChatLogLoaded ? (
           <p className="text-gray-500">Loading chat history...</p>
+        ) : chatLog.length === 0 ? (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-gray-500 text-center text-2xl font-bold">
+              メッセージを入力してチャットを始めましょう！
+            </p>
+          </div>
         ) : (
           chatLog.map((msg, index) => (
             <div key={index} className="mb-4">
