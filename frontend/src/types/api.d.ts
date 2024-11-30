@@ -21,11 +21,18 @@ export type Message = {
 }
 
 // 今までの会話内容を格納する型
-export type Messages = Message[];
+export type ChatLog = Message[];
 
 
 // AIからのデートプランの提案を格納する型
 export type SuggestMessage = {
   facilitys: Facility[];
   description: string;
+};
+
+// 休憩場所の格納先
+export type RestArea = {
+  cafe: Facility;
+  toilet: Facility;
+  convenienceStore: Facility;
 };

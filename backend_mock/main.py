@@ -1,7 +1,7 @@
 from typing import List
 
-import schemas
 from fastapi import Body, FastAPI
+import schemas
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -56,4 +56,20 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
             for data in dummy_data
         ],
         "description": "これはテストです",
+    }
+
+
+@app.post(
+    "/api/datePlan/restArea", response_model=schemas.apiDatePlanRestAreaResponseBody
+)
+def post_apiDatePlanRestArea(restAreas: schemas.apiDatePlanRestAreaRequestBody):
+    """最寄りのトイレ・カフェ・コンビニの情報を返却する"""
+    return {
+        "cafe": {"name": "スタバ", "latitude": 0, "longitude": 0},
+        "toilet": {"name": "公衆トイレ", "latitude": 0, "longitude": 0},
+        "convenienceStore": {
+            "name": "ファミリーマート0号",
+            "latitude": 0,
+            "longitude": 0,
+        },
     }
