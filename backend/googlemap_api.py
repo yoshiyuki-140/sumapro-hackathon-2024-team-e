@@ -68,9 +68,26 @@ def get_place_all(place_names, place_data):
 
 
 def get_true_place(request):
-
+    true_place = {}
     latitude = request.latitude
     longitude = request.longitude
+
+    if latitude > 90 or latitude < -90 or longitude > 180 or latitude < -180:
+        true_place = {
+            "name": "正しい位置情報ではありません",
+            "latitude": 999.9999,
+            "longitude": 999.9999
+        }
+
+    else:
+        true_place = {
+            "name": request.name,
+            "latitude": request.latitude,
+            "longitude": request.longitude
+        }
+        
+    return true_place
+        
 
 
 def get_cafe_restArea(true_place):
@@ -78,12 +95,12 @@ def get_cafe_restArea(true_place):
     デートの中で訪れる場所周辺のカフェ情報を取得する
     """
 
-    latitude = true_place.latitude
-    longitude = true_place.longitude
+    latitude = true_place["latitude"]
+    longitude = true_place["longitude"]
 
     # デートの中で訪れる場所周辺のカフェを検索
     place_cafe = gmaps.places_nearby(
-        location=(latitude, longitude), radius=1000, type="cafe"
+        location=(latitude, longitude), radius=10000, type="cafe"
     )
 
     # 最も近いカフェの緯度経度を取得
@@ -102,7 +119,7 @@ def get_cafe_restArea(true_place):
 
             else:
                 cafe_location_data = Facilitys(
-                    name="Not Found", latitude=None, longitude=None
+                    name="周辺のカフェは見つかりませんでした", latitude=None, longitude=None
                 )
 
     return cafe_location_data
@@ -113,11 +130,11 @@ def get_toilet_restArea(true_place):
     デートの中で訪れる場所周辺のトイレ情報を取得する
     """
 
-    latitude = true_place.latitude
-    longitude = true_place.longitude
+    latitude = true_place["latitude"]
+    longitude = true_place["longitude"]
 
     place_toilet = gmaps.places_nearby(
-        location=(latitude, longitude), radius=1000, type="toilet"
+        location=(latitude, longitude), radius=10000, type="toilet"
     )
 
     if place_toilet.get("results"):
@@ -134,7 +151,7 @@ def get_toilet_restArea(true_place):
 
             else:
                 toilet_location_data = Facilitys(
-                    name="Not Found", latitude=None, longitude=None
+                    name="周辺のトイレは見つかりませんでした", latitude=None, longitude=None
                 )
 
     return toilet_location_data
@@ -145,8 +162,8 @@ def get_convenienceStore_restArea(true_place):
     デートの中で訪れる場所周辺のコンビニ情報を取得する
     """
 
-    latitude = true_place.latitude
-    longitude = true_place.longitude
+    latitude = true_place["latitude"]
+    longitude = true_place["longitude"]
 
     place_convenienceStore = gmaps.places_nearby(
         location=(latitude, longitude), radius=10000, type="convenience_store"
@@ -170,7 +187,7 @@ def get_convenienceStore_restArea(true_place):
 
             else:
                 convenienceStore_location_data = Facilitys(
-                    name="Not Found", latitude=None, longitude=None
+                    name="周辺のコンビニは見つかりませんでした", latitude=None, longitude=None
                 )
 
     return convenienceStore_location_data

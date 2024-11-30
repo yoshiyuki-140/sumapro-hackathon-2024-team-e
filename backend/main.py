@@ -10,6 +10,7 @@ from googlemap_api import (
     get_place_all,
     get_place_data,
     get_toilet_restArea,
+    get_true_place
 )
 from openai import OpenAI
 from request import MessageRequestBody, PlanRequestBody
@@ -65,15 +66,16 @@ def post_restArea(request: PlanRequestBody):
     """
     デートの中で訪れる場所周辺の休憩スポットを返却する
     """
-
+    true_place = get_true_place(request)
+    
     # デートの中で訪れる場所周辺のカフェ情報を取得
-    place_restArea_cafe = get_cafe_restArea(request)
+    place_restArea_cafe = get_cafe_restArea(true_place)
 
     # デートの中で訪れる場所周辺のトイレ情報を取得
-    place_restArea_toilet = get_toilet_restArea(request)
+    place_restArea_toilet = get_toilet_restArea(true_place)
 
     # デートの中で訪れる場所周辺のコンビニ情報を取得
-    place_restArea_convenienceStore = get_convenienceStore_restArea(request)
+    place_restArea_convenienceStore = get_convenienceStore_restArea(true_place)
 
     return PlanResponseBody(
         cafe=place_restArea_cafe,

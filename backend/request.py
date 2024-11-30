@@ -18,5 +18,5 @@ class MessageRequestBody(BaseModel):
 
 class PlanRequestBody(BaseModel):
     name: str
-    latitude: Optional[float]
-    longitude: Optional[float]
+    latitude: float
+    longitude: float
