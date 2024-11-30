@@ -1,4 +1,4 @@
-.PHONY: f init run
+.PHONY: f init
 
 init:
 	pip install -r requirements.txt
