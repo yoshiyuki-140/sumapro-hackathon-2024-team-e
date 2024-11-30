@@ -50,34 +50,70 @@
 
 # 開発者向け
 
-## OPENAI_API_KEY設置場所
+## API KEY設置場所
 
-プロジェクトルートにBoxで配信している`.env`を配置してください。
-配置するだけで中に定義してある環境変数をシステムに読み込んでくれます。
+### backend
 
-例：
+バックエンドコンポーネントで使うAPIキーは`backend`フォルダ直下に`.env`ファイルを配置してください。
+
 ```bash
-.
-├── .env # <= ここ！
-├── .git
-├── .gitignore
-├── README.md
-├── backend
-├── docs
-└── frontend
+backend
+├── .env # <= ここ!
+├── chatgpt.py
+├── googlemap_api.py
+├── main.py
+├── makefile
+├── request.py
+├── requirements.txt
+└── response.py
 ```
+
+.envの例
+```bash
+OPENAI_API_KEY="うんたらかんたら"
+GOOGLE_MAPS_API_KEY="うんたらかんたら"
+```
+
+### frontend
+
+フロントエンドコンポーネントで使うAPIキーは`backend`フォルダ直下に`.env`ファイルを配置してください。
+
+```bash
+frontend
+├── .env.local # <= ここ!
+├── README.md
+├── makefile
+├── next-env.d.ts
+├── next.config.ts
+├── node_modules
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+├── src
+├── tailwind.config.ts
+└── tsconfig.json
+```
+
+.env.localの例
+```bash
+NEXT_PUBLIC_GOOGLE_MAP_KEY="うんたらかんたら"
+```
+
 
 ## フォルダ説明
 
 ```bash
-.
-├── .env            # 環境変数定義
+
+sumapro-hackathon-2024-team-e/
 ├── .git            # gitコマンドが参照する諸々が入ってる
 ├── .gitignore      # gitが追跡しないファイル・ディレクトリを定義
 ├── README.md       # リポジトリドキュメント
-├── backend         # バックエンドのコード(fastapi/openai/etc...)
-├── docs            # API仕様書等(swagger)等
-└── frontend        # フロントエンドのコード(Next.js)
+├── backend         # バックエンドのコード(fastapi/openai/googlemaps/etc...)
+├── backend_mock    # バックエンドのハリボテ
+├── docs            # API仕様書(swagger)等
+├── frontend        # フロントエンドのコード(Next.js)
+└── makefile        # makefile
 ```
 
 ## サービスのワイヤーフレーム(Figma)
