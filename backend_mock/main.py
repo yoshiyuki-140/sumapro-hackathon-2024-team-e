@@ -65,11 +65,7 @@ def apiDatePlan(chatlogs: List[schemas.ChatLog] = Body(...)):
 def post_apiDatePlanRestArea(restAreas: schemas.apiDatePlanRestAreaRequestBody):
     """最寄りのトイレ・カフェ・コンビニの情報を返却する"""
     return {
-        "cafe": {
-            "name": "スタバ",
-            "latitude": 36.565273733041856,
-            "longitude": 136.66319108890323,
-        },
+        "cafe": {"name": "スタバ", "latitude": 0, "longitude": 0},
         "toilet": {"name": "公衆トイレ", "latitude": 0, "longitude": 0},
         "convenienceStore": {
             "name": "ファミリーマート0号",

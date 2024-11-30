@@ -4,31 +4,16 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from openai import OpenAI
 
-from starlette.middleware.cors import CORSMiddleware
 from chatgpt import clean_description, question_description, question_name
-from googlemap_api import (
-    get_cafe_restArea,
-    get_change_data,
-    get_convenienceStore_restArea,
-    get_place_all,
-    get_place_data,
-    get_toilet_restArea,
-)
+from googlemap_api import (get_cafe_restArea, get_change_data,
+                           get_convenienceStore_restArea, get_place_all,
+                           get_place_data, get_toilet_restArea)
 from request import MessageRequestBody, PlanRequestBody
 from response import MessageResponseBody, PlanResponseBody
 
-load_dotenv()
-
 app = FastAPI()
+load_dotenv()
 client = OpenAI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.post("/api/datePlan", response_model=MessageResponseBody)
