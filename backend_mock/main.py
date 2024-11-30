@@ -3,8 +3,6 @@ from typing import List
 from fastapi import Body, FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-import schemas
-
 app = FastAPI()
 
 app.add_middleware(

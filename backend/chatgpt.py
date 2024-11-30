@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -9,27 +10,38 @@ load_dotenv()
 client = OpenAI()
 
 
-def question_description(Request: MessageRequestBody):
+def question_description(Requests: List[MessageRequestBody]):
     """
     デートプラン情報を提案するアシスタント機能
     """
-    Description_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": "デートプラン情報を提案するアシスタントです。",
-            },
-            {"role": "user", "content": Request.message},
-        ],
+
+    # 今までの会話履歴を取り出す
+    messages = [
+        {"role": request.role, "content": request.message} for request in Requests
+    ]
+
+    # messagesの先頭に役割を定義する
+    messages.insert(
+        0,
+        {
+            "role": "system",
+            "content": "デートプラン情報を提案するアシスタントです。",
+        },
     )
-    return Description_response.choices[0].message.content
+    Description_response = client.chat.completions.create(
+        model="gpt-4o-mini", messages=messages
+    )
+
+    Description_content = Description_response.choices[0].message.content
+
+    return Description_content
 
 
-def question_name(Request: MessageRequestBody):
+def question_name(cleaned_description: str):
     """
     デートの中で訪れる場所の名前だけを取得する機能
     """
+
     Name_response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -37,7 +49,7 @@ def question_name(Request: MessageRequestBody):
                 "role": "system",
                 "content": "デートの中で訪れる場所の名前だけを取得する。",
             },
-            {"role": "system", "content": question_description(Request)},
+            {"role": "system", "content": cleaned_description},
         ],
     )
     return Name_response.choices[0].message.content

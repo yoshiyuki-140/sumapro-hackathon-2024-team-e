@@ -115,7 +115,7 @@
           "properties": {
             "role": {
               "type": "string",
-              "example": "customer"
+              "example": "user"
             },
             "message": {
               "type": "string",

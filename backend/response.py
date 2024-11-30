@@ -10,4 +10,7 @@ class MessageResponseBody(BaseModel):
     description: str
 
 
-
+class PlanResponseBody(BaseModel):
+    cafe: Facilitys
+    toilet: Facilitys
+    convenienceStore: Facilitys
