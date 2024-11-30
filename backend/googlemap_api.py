@@ -2,6 +2,7 @@ import os
 
 import googlemaps
 from dotenv import load_dotenv
+
 from request import Facilitys, PlanRequestBody
 
 load_dotenv()
@@ -75,12 +76,12 @@ def get_cafe_restArea(Request: PlanRequestBody):
     latitude = Request.latitude
     longitude = Request.longitude
 
-    #デートの中で訪れる場所周辺のカフェを検索
+    # デートの中で訪れる場所周辺のカフェを検索
     place_cafe = gmaps.places_nearby(
         location=(latitude, longitude), radius=1000, type="cafe"
     )
 
-    #最も近いカフェの緯度経度を取得
+    # 最も近いカフェの緯度経度を取得
     if place_cafe.get("results"):
         for cafe in place_cafe["results"]:
             cafe_name = cafe["name"]

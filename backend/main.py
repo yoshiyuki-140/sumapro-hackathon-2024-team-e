@@ -1,10 +1,13 @@
-from chatgpt import clean_description, question_description, question_name
+from typing import List
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from openai import OpenAI
+
+from chatgpt import clean_description, question_description, question_name
 from googlemap_api import (get_cafe_restArea, get_change_data,
                            get_convenienceStore_restArea, get_place_all,
                            get_place_data, get_toilet_restArea)
-from openai import OpenAI
 from request import MessageRequestBody, PlanRequestBody
 from response import MessageResponseBody, PlanResponseBody
 
@@ -13,20 +16,20 @@ load_dotenv()
 client = OpenAI()
 
 
-@app.post("/api/datePlan")
-def question(request: MessageRequestBody):
+@app.post("/api/datePlan", response_model=MessageResponseBody)
+def question(requests: List[MessageRequestBody]):
     """
     対話内容からデートプラン情報を返却する
     """
 
     # デートプラン情報を提案する説明文取得
-    Description_content = question_description(request)
+    Description_content = question_description(requests)
 
     # 取得した説明文を整形する
-    Clean_description = clean_description(Description_content)
+    Cleaned_description = clean_description(Description_content)
 
     # デートの中で訪れる場所の名前だけを取得
-    name_content = question_name(request)
+    name_content = question_name(Cleaned_description)
 
     # 取得した場所のみのデータを整形してリストに格納
     place_names = get_change_data(name_content)
@@ -39,16 +42,16 @@ def question(request: MessageRequestBody):
 
     return MessageResponseBody(
         facilitys=place_all,
-        description=Clean_description,
+        description=Cleaned_description,
     )
 
 
-@app.post("/api/datePlan/restArea")
+@app.post("/api/datePlan/restArea", response_model=PlanResponseBody)
 def post_restArea(request: PlanRequestBody):
     """
     デートの中で訪れる場所周辺の休憩スポットを返却する
     """
-    
+
     # デートの中で訪れる場所周辺のカフェ情報を取得
     place_restArea_cafe = get_cafe_restArea(request)
 
