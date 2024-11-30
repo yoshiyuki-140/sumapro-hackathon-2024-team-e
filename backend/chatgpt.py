@@ -46,7 +46,7 @@ def question_name(cleaned_description: str):
         messages=[
             {
                 "role": "system",
-                "content": "デートプラン情報を提案するアシスタントから取得したデートプラン情報の説明文cleaned_descriptionからデートプランの中で訪れる場所の名前だけを取得する。",
+                "content": "デートプラン情報を提案するアシスタントから取得したデートプラン情報の説明文の中からデートプランの中で訪れる場所の名前だけを取得する。",
             },
             {"role": "system", "content": cleaned_description},
         ],

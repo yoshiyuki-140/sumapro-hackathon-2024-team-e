@@ -97,7 +97,7 @@ def get_cafe_restArea(true_place):
     latitude = true_place["latitude"]
     longitude = true_place["longitude"]
 
-    if latitude == 999.9999 or longitude == 999.9999:
+    if -90 <= latitude <= 90 and -180 <= longitude <= 180:
         cafe_location_data = Facilitys(
             name="周辺のカフェは見つかりませんでした", latitude=None, longitude=None
         )
@@ -139,7 +139,7 @@ def get_toilet_restArea(true_place):
     latitude = true_place["latitude"]
     longitude = true_place["longitude"]
 
-    if latitude == 999.9999 or longitude == 999.9999:
+    if -90 <= latitude <= 90 and -180 <= longitude <= 180:
         toilet_location_data = Facilitys(
             name="周辺のトイレは見つかりませんでした", latitude=None, longitude=None
         )
@@ -183,7 +183,7 @@ def get_convenienceStore_restArea(true_place):
     latitude = true_place["latitude"]
     longitude = true_place["longitude"]
 
-    if latitude == 999.9999 or longitude == 999.9999:
+    if -90 <= latitude <= 90 and -180 <= longitude <= 180:
         convenienceStore_location_data = Facilitys(
             name="周辺のコンビニは見つかりませんでした", latitude=None, longitude=None
         )
