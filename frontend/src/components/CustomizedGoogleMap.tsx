@@ -4,7 +4,6 @@
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { MapProps } from "@/types/customized.google.map";
 import { RestArea } from "@/types/api";
-import { useEffect } from "react";
 import { local_cafe, local_convenience_store, wc } from 'mdi-paths'
 
 
@@ -49,14 +48,10 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
 
 
 
-    // これでの実装は難しそう
-    useEffect(() => {
-        // restAreaをきちんと受け取ったかをチェックする
-        if (restAreas?.length === 0) {
-            console.warn("休憩場所の情報が取得できませんでした。", restAreas);
-        }
-
-    }, []);
+    // restAreaをきちんと受け取ったかをチェックする
+    if (restAreas?.length === 0) {
+        console.warn("休憩場所の情報が取得できませんでした。", restAreas);
+    }
 
     console.log("更新されました");
 
