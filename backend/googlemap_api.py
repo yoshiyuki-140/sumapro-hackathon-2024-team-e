@@ -98,11 +98,7 @@ def get_cafe_restArea(true_place):
     longitude = true_place["longitude"]
 
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
-        cafe_location_data = Facilitys(
-            name="周辺のカフェは見つかりませんでした", latitude=None, longitude=None
-        )
 
-    else:
         # デートの中で訪れる場所周辺のカフェを検索
         place_cafe = gmaps.places_nearby(
             location=(latitude, longitude), radius=10000, type="cafe"
@@ -129,6 +125,11 @@ def get_cafe_restArea(true_place):
                         longitude=None,
                     )
 
+    else:
+        cafe_location_data = Facilitys(
+            name="周辺のカフェは見つかりませんでした", latitude=None, longitude=None
+        )
+
     return cafe_location_data
 
 
@@ -140,11 +141,7 @@ def get_toilet_restArea(true_place):
     longitude = true_place["longitude"]
 
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
-        toilet_location_data = Facilitys(
-            name="周辺のトイレは見つかりませんでした", latitude=None, longitude=None
-        )
 
-    else:
         place_toilet = gmaps.places_nearby(
             location=(latitude, longitude), radius=10000, type="toilet"
         )
@@ -172,6 +169,11 @@ def get_toilet_restArea(true_place):
                         longitude=None,
                     )
 
+    else:
+        toilet_location_data = Facilitys(
+            name="周辺のトイレは見つかりませんでした", latitude=None, longitude=None
+        )
+
     return toilet_location_data
 
 
@@ -184,11 +186,7 @@ def get_convenienceStore_restArea(true_place):
     longitude = true_place["longitude"]
 
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
-        convenienceStore_location_data = Facilitys(
-            name="周辺のコンビニは見つかりませんでした", latitude=None, longitude=None
-        )
 
-    else:
         place_convenienceStore = gmaps.places_nearby(
             location=(latitude, longitude), radius=10000, type="convenience_store"
         )
@@ -215,5 +213,10 @@ def get_convenienceStore_restArea(true_place):
                         latitude=None,
                         longitude=None,
                     )
+
+    else:
+        convenienceStore_location_data = Facilitys(
+            name="周辺のコンビニは見つかりませんでした", latitude=None, longitude=None
+        )
 
     return convenienceStore_location_data
