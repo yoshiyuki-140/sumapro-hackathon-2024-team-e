@@ -54,7 +54,7 @@
 
 ### backend
 
-バックエンドコンポーネントで使うAPIキーは`backend`フォルダ直下に`.env`ファイルを配置してください。
+バックエンドコンポーネントで使うAPIキーは`ackend`フォルダ直下に`.env`ファイルを配置してください。
 
 ```bash
 backend
@@ -76,7 +76,7 @@ GOOGLE_MAPS_API_KEY="うんたらかんたら"
 
 ### frontend
 
-フロントエンドコンポーネントで使うAPIキーは`backend`フォルダ直下に`.env`ファイルを配置してください。
+フロントエンドコンポーネントで使うAPIキーは`frontend`フォルダ直下に`.env.local`ファイルを配置してください。
 
 ```bash
 frontend
