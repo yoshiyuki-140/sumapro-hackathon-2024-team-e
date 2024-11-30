@@ -3,6 +3,7 @@ from typing import List
 
 from dotenv import load_dotenv
 from openai import OpenAI
+
 from request import MessageRequestBody
 
 load_dotenv()

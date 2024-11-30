@@ -1,12 +1,13 @@
 from typing import List
 
-from chatgpt import clean_description, question_description, question_name
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from openai import OpenAI
+
+from chatgpt import clean_description, question_description, question_name
 from googlemap_api import (get_cafe_restArea, get_change_data,
                            get_convenienceStore_restArea, get_place_all,
                            get_place_data, get_toilet_restArea)
-from openai import OpenAI
 from request import MessageRequestBody, PlanRequestBody
 from response import MessageResponseBody, PlanResponseBody
 
@@ -45,7 +46,7 @@ def question(requests: List[MessageRequestBody]):
     )
 
 
-@app.post("/api/datePlan/restArea")
+@app.post("/api/datePlan/restArea", response_model=PlanResponseBody)
 def post_restArea(request: PlanRequestBody):
     """
     デートの中で訪れる場所周辺の休憩スポットを返却する
