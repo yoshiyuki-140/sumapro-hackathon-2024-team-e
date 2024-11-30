@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import Body, FastAPI
+import schemas
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
