@@ -3,7 +3,6 @@ from typing import List
 
 from dotenv import load_dotenv
 from openai import OpenAI
-
 from request import MessageRequestBody
 
 load_dotenv()
@@ -25,7 +24,7 @@ def question_description(Requests: List[MessageRequestBody]):
         0,
         {
             "role": "system",
-            "content": "デートプラン情報を提案するアシスタントです。",
+            "content": "全ての訪れる場所は必ず店舗名を出してデートプラン情報を提案するアシスタントです。",
         },
     )
     Description_response = client.chat.completions.create(
@@ -47,7 +46,7 @@ def question_name(cleaned_description: str):
         messages=[
             {
                 "role": "system",
-                "content": "デートの中で訪れる場所の名前だけを取得する。",
+                "content": "デートプラン情報を提案するアシスタントから取得したデートプラン情報の説明文cleaned_descriptionからデートプランの中で訪れる場所の名前だけを取得する。",
             },
             {"role": "system", "content": cleaned_description},
         ],

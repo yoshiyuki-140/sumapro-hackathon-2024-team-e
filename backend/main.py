@@ -1,17 +1,31 @@
 from typing import List
 
+from chatgpt import clean_description, question_description, question_name
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from googlemap_api import (
+    get_cafe_restArea,
+    get_change_data,
+    get_convenienceStore_restArea,
+    get_place_all,
+    get_place_data,
+    get_toilet_restArea,
+)
 from openai import OpenAI
-
-from chatgpt import clean_description, question_description, question_name
-from googlemap_api import (get_cafe_restArea, get_change_data,
-                           get_convenienceStore_restArea, get_place_all,
-                           get_place_data, get_toilet_restArea)
 from request import MessageRequestBody, PlanRequestBody
 from response import MessageResponseBody, PlanResponseBody
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 load_dotenv()
 client = OpenAI()
 
@@ -35,10 +49,10 @@ def question(requests: List[MessageRequestBody]):
     place_names = get_change_data(name_content)
 
     # 取得した場所のみの緯度経度を取得する
-    place_data = get_place_data(place_names)
+    place_data, clean_place_names = get_place_data(place_names)
 
     # 取得した場所の名前とその場所の緯度経度を合体
-    place_all = get_place_all(place_names, place_data)
+    place_all = get_place_all(clean_place_names, place_data)
 
     return MessageResponseBody(
         facilitys=place_all,
