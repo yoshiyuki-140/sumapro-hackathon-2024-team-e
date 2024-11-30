@@ -1,4 +1,4 @@
-.PHONY: f init
+.PHONY: f init run
 
 init:
 	pip install -r requirements.txt
@@ -8,3 +8,6 @@ f:
 	autoflake --remove-all-unused-imports -r --in-place . --exclude=venv
 	black .
 	isort .
+
+run:
+	uvicorn main:app --reload
