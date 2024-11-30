@@ -84,8 +84,8 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                         {/* カフェのマーカー */}
                         <Marker
                             position={{
-                                lat: restAreas[changedCardIndex].cafe.latitude,
-                                lng: restAreas[changedCardIndex].cafe.longitude
+                                lat: restAreas[changedCardIndex]?.cafe?.latitude,
+                                lng: restAreas[changedCardIndex]?.cafe?.longitude
                             }}
                             // label={restAreas[changedCardIndex].cafe.name}
                             // カフェアイコン
@@ -100,8 +100,8 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                         {/* コンビニのマーカー */}
                         <Marker
                             position={{
-                                lat: restAreas[changedCardIndex].convenienceStore.latitude,
-                                lng: restAreas[changedCardIndex].convenienceStore.longitude
+                                lat: restAreas[changedCardIndex]?.convenienceStore?.latitude,
+                                lng: restAreas[changedCardIndex]?.convenienceStore?.longitude
                             }}
                             // label={restAreas[changedCardIndex].convenienceStore.name}
                             // コンビニアイコン
@@ -116,8 +116,8 @@ const CustomizedGoogleMap: React.FC<CustomizedGoogleMapProps> = ({ center, facil
                         {/* トイレのマーカー */}
                         <Marker
                             position={{
-                                lat: restAreas[changedCardIndex].toilet.latitude,
-                                lng: restAreas[changedCardIndex].toilet.longitude
+                                lat: restAreas[changedCardIndex]?.toilet?.latitude,
+                                lng: restAreas[changedCardIndex]?.toilet?.longitude
                             }}
                             // label={restAreas[changedCardIndex].toilet.name}
                             // トイレアイコン
