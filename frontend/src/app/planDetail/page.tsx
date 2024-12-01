@@ -2,6 +2,7 @@
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 import DropdownMenu from "@/components/DropDownMenu";
 import { Facility, SuggestMessage, RestArea } from "@/types/api";
+import { restaurant } from "mdi-paths";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -54,6 +55,7 @@ export default function Detail() {
   // 拠点情報から各々の近くの休憩所を検索する。APIの呼び出し
   const getRestArea = useCallback(async () => {
     // APIエントリポイントにリクエスト
+    console.log("facilities length", facilities.length)
     for (const facility of facilities) {
       try {
         const response = await fetch("http://localhost:8000/api/datePlan/restArea", {
@@ -74,7 +76,11 @@ export default function Detail() {
       } catch (error) {
         console.error("Failed to fetch response:", error);
       }
+
+      console.log("restAreas length", restAreas.length);
     }
+    console.log("restAreas length", restAreas.length);
+
   }, [facilities]);
 
 
@@ -89,19 +95,28 @@ export default function Detail() {
       <div className="w-1/2 h-screen flex flex-col">
         <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll flex flex-col">
           {/* 地点情報カード */}
-          {facilities.map((item, index) => {
-            console.log(index, item.name);
-            return (
-              // ドロップダウンメニュー
-              <DropdownMenu
-                menuTitle={item.name}
-                restArea={restAreas[index]}
-                key={index}
-                cardIndex={index}
-                setChangedCardIndex={setChangedCardIndex}
-              />
-            )
-          })}
+          {/* 休憩場所情報を取得できたか否か */}
+          {facilities.length !== restAreas.length ?
+            (
+              // ローディングメッセージ
+              <div
+                className="w-full flex flex-col text-black text-2xl "
+              >
+                Loading...
+              </div>
+            ) : (facilities.map((item, index) => {
+              console.log(index, item.name);
+              return (
+                // ドロップダウンメニュー
+                <DropdownMenu
+                  menuTitle={item.name}
+                  restArea={restAreas[index]}
+                  key={index}
+                  cardIndex={index}
+                  setChangedCardIndex={setChangedCardIndex}
+                />
+              )
+            }))}
         </div>
 
         {/* 戻るボタンとか配置する場所 */}
