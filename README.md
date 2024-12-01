@@ -11,9 +11,15 @@
 
 [@yoshiyuki-140](https://github.com/yoshiyuki-140)
 
+- 恋愛をテーマにしているので、温かみのある色に設定しました
+
 [@YamagamiFuga](https://github.com/YamagamiFuga)
 
-- 
+- **生成AIからのデータを成形するロジックを考えること**
+    1. 生成AIからデートスポット名を抽出
+    2. デートスポット名から緯度経度を取得
+    
+    これらを結合させるロジックを考えた
 
 ## 開発技術
 
