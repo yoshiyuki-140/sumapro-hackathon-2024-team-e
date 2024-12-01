@@ -5,6 +5,7 @@ import { ChatLog, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 import { LoadScript } from "@react-google-maps/api";
 import { useRouter } from "next/navigation";
+import { message } from "mdi-paths";
 
 export default function Chat() {
   // リダイレクトを実現するためにuseRouterを使う
@@ -204,13 +205,13 @@ export default function Chat() {
                           <CustomizedGoogleMap
                             // 万一緯度経度が読み込めなかったら、DMM金沢事業所がDefaultCenterとして表示される
                             center={{
-                              name: suggestMessage.facilitys[0]?.name || "Default Center",
+                              name: msg.facilitys[0]?.name || "Default Center",
                               latitude:
-                                suggestMessage.facilitys[0]?.latitude || 36.59438316927364,
+                                msg.facilitys[0]?.latitude || 36.59438316927364,
                               longitude:
-                                suggestMessage.facilitys[0]?.longitude || 136.68282470468046,
+                                msg.facilitys[0]?.longitude || 136.68282470468046,
                             }}
-                            facilities={suggestMessage.facilitys}
+                            facilities={msg.facilitys}
                             height="400px"
                           />
                         ) : (
@@ -234,7 +235,7 @@ export default function Chat() {
                       >
                         {/* デートプランの説明 */}
                         {isLoaded ? (
-                          suggestMessage?.description
+                          msg?.description
                         ) : (
                           <p>Loading Description...</p>
                         )}
