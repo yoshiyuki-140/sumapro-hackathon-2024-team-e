@@ -69,7 +69,7 @@ export default function Detail() {
 
         const restArea: RestArea = await response.json();
 
-        console.log(facility, restArea);
+        console.log("デートスポット", facility, "休憩場所", restArea);
 
         // レスポンスボディーを保存
         setRestAreas((prev) => [...prev, restArea]);
