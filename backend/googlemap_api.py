@@ -101,7 +101,7 @@ def get_cafe_restArea(true_place):
 
         # デートの中で訪れる場所周辺のカフェを検索
         place_cafe = gmaps.places_nearby(
-            location=(latitude, longitude), radius=10000, type="cafe"
+            location=(latitude, longitude), radius=500, type="cafe"
         )
 
         # 最も近いカフェの緯度経度を取得
@@ -143,7 +143,7 @@ def get_toilet_restArea(true_place):
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
 
         place_toilet = gmaps.places_nearby(
-            location=(latitude, longitude), radius=10000, type="toilet"
+            location=(latitude, longitude), radius=500, type="toilet"
         )
 
         if place_toilet.get("results"):
@@ -188,7 +188,7 @@ def get_convenienceStore_restArea(true_place):
     if -90 <= latitude <= 90 and -180 <= longitude <= 180:
 
         place_convenienceStore = gmaps.places_nearby(
-            location=(latitude, longitude), radius=10000, type="convenience_store"
+            location=(latitude, longitude), radius=500, type="convenience_store"
         )
 
         if place_convenienceStore.get("results"):
