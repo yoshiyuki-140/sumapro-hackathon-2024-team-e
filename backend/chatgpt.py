@@ -13,6 +13,7 @@ def question_description(Requests: List[MessageRequestBody]):
     """
     デートプラン情報を提案するアシスタント機能
     """
+    
     # プロンプトが記述してあるdescription.txtをファイル呼び出す
     with open('description.txt', 'r', encoding = 'utf-8') as file:
         description_txt = file.read()
@@ -34,9 +35,7 @@ def question_description(Requests: List[MessageRequestBody]):
         model="gpt-4o-mini", messages=messages
     )
 
-    Description_content = Description_response.choices[0].message.content
-
-    return Description_content
+    return Description_response.choices[0].message.content
 
 
 def question_name(cleaned_description: str):
@@ -65,6 +64,7 @@ def clean_description(description_content):
     """
     不要な文字のパターンを定義し削除する
     """
+    
     patterns = [
         r"\*\*.*?\*\*",  # **で囲まれた部分（太字）
         r"###.*",  # ### で始まる行
@@ -83,3 +83,18 @@ def clean_description(description_content):
     description_content = description_content.replace("\n", "")
 
     return description_content
+
+def true_description(place_all, Cleaned_description):
+    """
+    場所情報を一つも提供できない場合は"提案するデートプラン情報が見つかりませんでした。" と表示指せる関数
+    """    
+    
+    true_description = ""
+    
+    if not place_all:
+        true_description = "提案するデートプラン情報が見つかりませんでした。"
+        
+    else:
+        true_description = Cleaned_description
+        
+    return true_description

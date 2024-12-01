@@ -1,6 +1,6 @@
 from typing import List
 
-from chatgpt import clean_description, question_description, question_name
+from chatgpt import clean_description, question_description, question_name, true_description
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from googlemap_api import (get_cafe_restArea, get_change_data,
@@ -39,19 +39,22 @@ def question(requests: List[MessageRequestBody]):
 
     # デートの中で訪れる場所の名前だけを取得
     name_content = question_name(Cleaned_description)
-
+    
     # 取得した場所のみのデータを整形してリストに格納
     place_names = get_change_data(name_content)
-
+    
     # 取得した場所のみの緯度経度を取得する
     place_data, clean_place_names = get_place_data(place_names)
 
     # 取得した場所の名前とその場所の緯度経度を合体
     place_all = get_place_all(clean_place_names, place_data)
-
+    
+    # 場所情報を一つも提供できない場合は"提案するデートプラン情報が見つかりませんでした。" と表示
+    True_description = true_description(place_all, Cleaned_description)
+    
     return MessageResponseBody(
         facilitys=place_all,
-        description=Cleaned_description,
+        description=True_description,
     )
 
 

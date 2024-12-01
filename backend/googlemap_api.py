@@ -14,6 +14,7 @@ def get_place_data(place_names):
     """
     place_namesの場所の名前から緯度経度を取得する
     """
+    
     location_data = []
     clean_place_names = []
 
@@ -31,15 +32,15 @@ def get_place_data(place_names):
     return location_data, clean_place_names
 
 
-def get_change_data(Name_content):
+def get_change_data(name_content):
     """
     取得した場所のみのデータを整形してリストに格納
     """
-
+        
     # 取得した場所のみのデータを不要な空白を取り除く、改行区切りでリストに格納
     facility_list = []
 
-    for line in Name_content.split("\n"):
+    for line in name_content.split("\n"):
         parts = line.split(". ", 1)
         if len(parts) > 1:
             facility_list.append(parts[1].strip())
@@ -51,6 +52,7 @@ def get_place_all(place_names, place_data):
     """
     取得した場所の名前とその場所の緯度経度を合体
     """
+    
     place_all = []
     for i in range(len(place_names)):
         place_all.append(
@@ -137,6 +139,7 @@ def get_toilet_restArea(true_place):
     """
     デートの中で訪れる場所周辺のトイレ情報を取得する
     """
+    
     latitude = true_place["latitude"]
     longitude = true_place["longitude"]
 
