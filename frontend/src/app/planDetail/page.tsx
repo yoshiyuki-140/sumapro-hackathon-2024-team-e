@@ -55,7 +55,6 @@ export default function Detail() {
   // 拠点情報から各々の近くの休憩所を検索する。APIの呼び出し
   const getRestArea = useCallback(async () => {
     // APIエントリポイントにリクエスト
-    console.log("facilities length", facilities.length)
     for (const facility of facilities) {
       try {
         const response = await fetch("http://localhost:8000/api/datePlan/restArea", {
@@ -69,7 +68,8 @@ export default function Detail() {
         }
 
         const restArea: RestArea = await response.json();
-        console.log("休憩場所", restArea);
+
+        console.log(facility, restArea);
 
         // レスポンスボディーを保存
         setRestAreas((prev) => [...prev, restArea]);
@@ -77,9 +77,7 @@ export default function Detail() {
         console.error("Failed to fetch response:", error);
       }
 
-      console.log("restAreas length", restAreas.length);
     }
-    console.log("restAreas length", restAreas.length);
 
   }, [facilities]);
 
@@ -105,7 +103,6 @@ export default function Detail() {
                 Loading...
               </div>
             ) : (facilities.map((item, index) => {
-              console.log(index, item.name);
               return (
                 // ドロップダウンメニュー
                 <DropdownMenu
