@@ -4,6 +4,7 @@ import DropdownMenu from "@/components/DropDownMenu";
 import { Facility, SuggestMessage, RestArea } from "@/types/api";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { LoadScript } from "@react-google-maps/api";
 
 
 
@@ -50,6 +51,12 @@ export default function Detail() {
     longitude: facilities[0]?.longitude,
   };
 
+  // Google Mpas APIキー読み出し
+  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "";
+  if (!apiKey) {
+    console.error("Google Map APIキーが設定されていません。");
+  }
+
 
   // 拠点情報から各々の近くの休憩所を検索する。APIの呼び出し
   const getRestArea = useCallback(async () => {
@@ -67,14 +74,17 @@ export default function Detail() {
         }
 
         const restArea: RestArea = await response.json();
-        console.log("休憩場所", restArea);
+
+        console.log("デートスポット", facility, "休憩場所", restArea);
 
         // レスポンスボディーを保存
         setRestAreas((prev) => [...prev, restArea]);
       } catch (error) {
         console.error("Failed to fetch response:", error);
       }
+
     }
+
   }, [facilities]);
 
 
@@ -89,19 +99,27 @@ export default function Detail() {
       <div className="w-1/2 h-screen flex flex-col">
         <div className="h-5/6 bg-red-100 p-6 overflow-y-scroll flex flex-col">
           {/* 地点情報カード */}
-          {facilities.map((item, index) => {
-            console.log(index, item.name);
-            return (
-              // ドロップダウンメニュー
-              <DropdownMenu
-                menuTitle={item.name}
-                restArea={restAreas[index]}
-                key={index}
-                cardIndex={index}
-                setChangedCardIndex={setChangedCardIndex}
-              />
-            )
-          })}
+          {/* 休憩場所情報を取得できたか否か */}
+          {facilities.length !== restAreas.length ?
+            (
+              // ローディングメッセージ
+              <div
+                className="w-full flex flex-col text-black text-2xl "
+              >
+                Loading...
+              </div>
+            ) : (facilities.map((item, index) => {
+              return (
+                // ドロップダウンメニュー
+                <DropdownMenu
+                  menuTitle={item.name}
+                  restArea={restAreas[index]}
+                  key={index}
+                  cardIndex={index}
+                  setChangedCardIndex={setChangedCardIndex}
+                />
+              )
+            }))}
         </div>
 
         {/* 戻るボタンとか配置する場所 */}
@@ -115,19 +133,23 @@ export default function Detail() {
             &#x21A9;
           </button>
           {/* デートプランをPDFでダウンロードするボタン */}
-          <button
-            className="bg-red-400 p-3 rounded-xl border-black border-2 w-20 h-14 text-black text-2xl flex justify-center items-center"
-          >
-            {/* ダウンロードアイコン */}
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.92 12.08L12 20l-7.92-7.92l1.42-1.41l5.5 5.5V2h2v14.17l5.5-5.51zM12 20H2v2h20v-2z" /></svg>
-          </button>
+          {/* ############################## START ############################## */}
+          {/* <button */}
+          {/* className="bg-red-400 p-3 rounded-xl border-black border-2 w-20 h-14 text-black text-2xl flex justify-center items-center" */}
+          {/* > */}
+          {/* ダウンロードアイコン */}
+          {/* <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19.92 12.08L12 20l-7.92-7.92l1.42-1.41l5.5 5.5V2h2v14.17l5.5-5.51zM12 20H2v2h20v-2z" /></svg> */}
+          {/* </button> */}
+          {/* ##############################  END  ############################## */}
         </div>
       </div>
 
       {/* 右側: Google Map */}
-      <div className="w-1/2">
-        <CustomizedGoogleMap center={mapCenter} facilities={facilities} height="100vh" restAreas={restAreas} changedCardIndex={changedCardIndex} />
-      </div>
+      <LoadScript googleMapsApiKey={apiKey}>
+        <div className="w-1/2">
+          <CustomizedGoogleMap center={mapCenter} facilities={facilities} height="100vh" restAreas={restAreas} changedCardIndex={changedCardIndex} />
+        </div>
+      </LoadScript>
     </div>
   )
 };

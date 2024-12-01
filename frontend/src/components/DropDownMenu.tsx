@@ -25,7 +25,6 @@ export default function DropdownMenu({
     }
   }, [isOpen]);
 
-  console.log("menuTitle", menuTitle, "restArea", restArea);
 
   return (
     <div className="w-full flex flex-col">
