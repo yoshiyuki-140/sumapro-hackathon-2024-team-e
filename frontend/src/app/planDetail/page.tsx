@@ -2,7 +2,6 @@
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
 import DropdownMenu from "@/components/DropDownMenu";
 import { Facility, SuggestMessage, RestArea } from "@/types/api";
-import { restaurant } from "mdi-paths";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
