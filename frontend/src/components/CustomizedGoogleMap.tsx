@@ -1,7 +1,7 @@
 'use client';
 
 
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { MapProps } from "@/types/customized.google.map";
 import { RestArea } from "@/types/api";
 import { local_cafe, local_convenience_store, wc } from 'mdi-paths'
