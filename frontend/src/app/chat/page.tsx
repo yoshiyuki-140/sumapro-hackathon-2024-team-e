@@ -177,6 +177,7 @@ export default function Chat() {
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
 
+      {/* APIキー呼び出し */}
       <LoadScript googleMapsApiKey={apiKey}>
 
         <div className="flex-grow overflow-y-auto bg-white p-4 rounded-lg shadow">
