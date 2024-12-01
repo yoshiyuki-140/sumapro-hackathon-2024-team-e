@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChatLog, SuggestMessage, Message } from "@/types/api";
 import CustomizedGoogleMap from "@/components/CustomizedGoogleMap";
+import { LoadScript } from "@react-google-maps/api";
 import { useRouter } from "next/navigation";
 
 export default function Chat() {
@@ -25,6 +26,12 @@ export default function Chat() {
 
   // チャットログがロードされたか否かを保存するフラグ
   const [isChatLogLoaded, setIsChatLogLoaded] = useState(false);
+
+  // Google Mpas APIキー読み出し
+  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY || "";
+  if (!apiKey) {
+    console.error("Google Map APIキーが設定されていません。");
+  }
 
   // セッションストレージからチャットログを取り出す関数
   const loadChatLogFromSessionStorage = () => {
@@ -169,89 +176,93 @@ export default function Chat() {
   return (
     <div className="flex flex-col h-screen p-4 bg-red-50">
       {/* チャットエリア */}
-      <div className="flex-grow overflow-y-auto bg-white p-4 rounded-lg shadow">
-        {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
-        {!isChatLogLoaded ? (
-          <p className="text-gray-500">Loading chat history...</p>
-        ) : chatLog.length === 0 ? (
-          <div className="flex justify-center items-center h-full">
-            <p className="text-gray-500 text-center text-2xl font-bold">
-              メッセージを入力してチャットを始めましょう！
-            </p>
-          </div>
-        ) : (
-          chatLog.map((msg, index) => (
-            <div key={index} className="mb-4">
-              {msg.role === "system" ? (
-                // roleがsystemの場合（左寄せ）
-                <div className="flex flex-row">
-                  <div className="inline-block px-4 py-4 rounded-2xl bg-red-100 text-black w-2/3">
-                    <div>
-                      {/* GoogleMapを表示 */}
-                      {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
-                      {suggestMessage && isLoaded ? (
-                        <CustomizedGoogleMap
-                          // 万一緯度経度が読み込めなかったら、DMM金沢事業所がDefaultCenterとして表示される
-                          center={{
-                            name: suggestMessage.facilitys[0]?.name || "Default Center",
-                            latitude:
-                              suggestMessage.facilitys[0]?.latitude || 36.59438316927364,
-                            longitude:
-                              suggestMessage.facilitys[0]?.longitude || 136.68282470468046,
-                          }}
-                          facilities={suggestMessage.facilitys}
-                          height="400px"
-                        />
-                      ) : (
-                        <p>Loading map...</p> // ローディングメッセージの表示
-                      )}
-                    </div>
 
-                    {/* 訪れる施設一覧 */}
-                    <div className="my-10">
-                      {msg.facilitys?.map((facility, idx) => (
-                        <div
-                          key={idx}
-                          className="item bg-red-300 my-3 mx-4 px-6 py-5 font-bold text-xl rounded-2xl"
-                        >
-                          {facility.name}
-                        </div>
-                      ))}
-                    </div>
-                    <div
-                      className="mt-6 mx-5 mb-28"
-                    >
-                      {/* デートプランの説明 */}
-                      {isLoaded ? (
-                        suggestMessage?.description
-                      ) : (
-                        <p>Loading Description...</p>
-                      )}
-                    </div>
-                    <div className="flex flex-row justify-center my-10">
-                      {/* デートプラン詳細ページへのリダイレクトを行うボタン */}
-                      <button
-                        onClick={saveDatePlan}
-                        className="bg-red-400 p-5 rounded-2xl border-black border-2 text-6xl"
-                      >
-                        {/* 詳細ページへのリンクを表すSVGアイコン */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 12c2.5 0 4.5 2 4.5 4.5c0 .88-.25 1.71-.69 2.4l3.08 3.1L21 23.39l-3.12-3.07c-.69.43-1.51.68-2.38.68c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5m0 2a2.5 2.5 0 0 0-2.5 2.5a2.5 2.5 0 0 0 2.5 2.5a2.5 2.5 0 0 0 2.5-2.5a2.5 2.5 0 0 0-2.5-2.5M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h1v7l2.5-1.5L12 9V2h6a2 2 0 0 1 2 2v7.81A6.48 6.48 0 0 0 15.5 10A6.5 6.5 0 0 0 9 16.5c0 2.31 1.21 4.35 3.03 5.5z" /></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                // roleがuserの場合（右寄せ）
-                <div className="flex flex-row-reverse w-full my-10">
-                  <div className="inline-block px-4 py-2 rounded-2xl bg-red-100 text-black w-1/3">
-                    <span>{msg.message}</span>
-                  </div>
-                </div>
-              )}
+      <LoadScript googleMapsApiKey={apiKey}>
+
+        <div className="flex-grow overflow-y-auto bg-white p-4 rounded-lg shadow">
+          {/* 描写開始条件 : isChatLogLoadedがtrueであること -> セッションストレージからのデータ読込が成功したこと */}
+          {!isChatLogLoaded ? (
+            <p className="text-gray-500">Loading chat history...</p>
+          ) : chatLog.length === 0 ? (
+            <div className="flex justify-center items-center h-full">
+              <p className="text-gray-500 text-center text-2xl font-bold">
+                メッセージを入力してチャットを始めましょう！
+              </p>
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            chatLog.map((msg, index) => (
+              <div key={index} className="mb-4">
+                {msg.role === "system" ? (
+                  // roleがsystemの場合（左寄せ）
+                  <div className="flex flex-row">
+                    <div className="inline-block px-4 py-4 rounded-2xl bg-red-100 text-black w-2/3">
+                      <div>
+                        {/* GoogleMapを表示 */}
+                        {/* 一番最初に訪れる場所を初期レンダリング時の中心に据える */}
+                        {suggestMessage && isLoaded ? (
+                          <CustomizedGoogleMap
+                            // 万一緯度経度が読み込めなかったら、DMM金沢事業所がDefaultCenterとして表示される
+                            center={{
+                              name: suggestMessage.facilitys[0]?.name || "Default Center",
+                              latitude:
+                                suggestMessage.facilitys[0]?.latitude || 36.59438316927364,
+                              longitude:
+                                suggestMessage.facilitys[0]?.longitude || 136.68282470468046,
+                            }}
+                            facilities={suggestMessage.facilitys}
+                            height="400px"
+                          />
+                        ) : (
+                          <p>Loading map...</p> // ローディングメッセージの表示
+                        )}
+                      </div>
+
+                      {/* 訪れる施設一覧 */}
+                      <div className="my-10">
+                        {msg.facilitys?.map((facility, idx) => (
+                          <div
+                            key={idx}
+                            className="item bg-red-300 my-3 mx-4 px-6 py-5 font-bold text-xl rounded-2xl"
+                          >
+                            {facility.name}
+                          </div>
+                        ))}
+                      </div>
+                      <div
+                        className="mt-6 mx-5 mb-28"
+                      >
+                        {/* デートプランの説明 */}
+                        {isLoaded ? (
+                          suggestMessage?.description
+                        ) : (
+                          <p>Loading Description...</p>
+                        )}
+                      </div>
+                      <div className="flex flex-row justify-center my-10">
+                        {/* デートプラン詳細ページへのリダイレクトを行うボタン */}
+                        <button
+                          onClick={saveDatePlan}
+                          className="bg-red-400 p-5 rounded-2xl border-black border-2 text-6xl"
+                        >
+                          {/* 詳細ページへのリンクを表すSVGアイコン */}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 12c2.5 0 4.5 2 4.5 4.5c0 .88-.25 1.71-.69 2.4l3.08 3.1L21 23.39l-3.12-3.07c-.69.43-1.51.68-2.38.68c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5m0 2a2.5 2.5 0 0 0-2.5 2.5a2.5 2.5 0 0 0 2.5 2.5a2.5 2.5 0 0 0 2.5-2.5a2.5 2.5 0 0 0-2.5-2.5M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h1v7l2.5-1.5L12 9V2h6a2 2 0 0 1 2 2v7.81A6.48 6.48 0 0 0 15.5 10A6.5 6.5 0 0 0 9 16.5c0 2.31 1.21 4.35 3.03 5.5z" /></svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // roleがuserの場合（右寄せ）
+                  <div className="flex flex-row-reverse w-full my-10">
+                    <div className="inline-block px-4 py-2 rounded-2xl bg-red-100 text-black w-1/3">
+                      <span>{msg.message}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      </LoadScript>
 
       {/* 入力フォーム */}
       <div className="flex justify-center">
@@ -285,6 +296,6 @@ export default function Chat() {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
