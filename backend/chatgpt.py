@@ -13,18 +13,21 @@ def question_description(Requests: List[MessageRequestBody]):
     """
     デートプラン情報を提案するアシスタント機能
     """
-
+    # プロンプトが記述してあるdescription.txtをファイル呼び出す
+    with open('description.txt', 'r', encoding = 'utf-8') as file:
+        description_txt = file.read()
+        
     # 今までの会話履歴を取り出す
     messages = [
         {"role": request.role, "content": request.message} for request in Requests
     ]
-
+        
     # messagesの先頭に役割を定義する
     messages.insert(
         0,
         {
             "role": "system",
-            "content": "全ての訪れる場所は必ず店舗名を出してデートプラン情報を提案するアシスタントです。",
+            "content": description_txt,
         },
     )
     Description_response = client.chat.completions.create(
@@ -40,13 +43,17 @@ def question_name(cleaned_description: str):
     """
     デートの中で訪れる場所の名前だけを取得する機能
     """
+    
+    # プロンプトが記述してあるplace.txtをファイル呼び出す
+    with open('place.txt', 'r', encoding = 'utf-8') as file:
+        place_txt = file.read() 
 
     Name_response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": "デートプラン情報を提案するアシスタントから取得したデートプラン情報の説明文の中からデートプランの中で訪れる場所の名前だけを取得する。",
+                "content": place_txt
             },
             {"role": "system", "content": cleaned_description},
         ],
